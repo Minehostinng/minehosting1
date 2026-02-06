@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MineHosting - Painel de Controle do seu servidor Minecraft">
+    <title>Painel - MineHosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .panel-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-darker);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar .logo {
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--primary);
+        }
+
+        .sidebar-menu a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 0 20px;
+            margin-bottom: 15px;
+        }
+
+        /* Main Content */
+        .panel-main {
+            flex: 1;
+            margin-left: 280px;
+            background: var(--bg-dark);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
+            background: var(--bg-darker);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .panel-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-dark);
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .user-info-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .panel-content {
+            padding: 40px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            transition: var(--transition-normal);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-card-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-dark);
+            font-size: 1.2rem;
+        }
+
+        .stat-card-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-card-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Server List */
+        .servers-section {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+        }
+
+        .servers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .servers-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .server-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            transition: var(--transition-normal);
+        }
+
+        .server-card:hover {
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .server-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .server-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #5d8f3b 0%, #3f6d2a 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .server-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .server-details p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .server-status.online::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .server-status.offline {
+            color: #fd79a8;
+        }
+
+        .server-status.offline::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #fd79a8;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .server-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .server-actions .btn {
+            padding: 10px 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                display: none;
+            }
+
+            .panel-main {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .server-card {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .server-info {
+                flex-direction: column;
+            }
+
+            .server-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Efeito de clique nos botões */
+        .btn.clicked {
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-menu a.active {
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .sidebar-menu a:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="panel-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cube"></i>
+                <span>Mine<span class="highlight">Hosting</span></span>
+            </a>
+
+            <ul class="sidebar-menu">
+                <li><a href="painel.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-server"></i> Meus Servidores</a></li>
+                <li><a href="#"><i class="fas fa-plus-circle"></i> Novo Servidor</a></li>
+                <li><a href="#"><i class="fas fa-database"></i> Backups</a></li>
+            </ul>
+
+            <div class="menu-section">
+                <p class="menu-section-title">Configurações</p>
+                <ul class="sidebar-menu">
+                    <li><a href="#"><i class="fas fa-user"></i> Minha Conta</a></li>
+                    <li><a href="#"><i class="fas fa-credit-card"></i> Pagamentos</a></li>
+                    <li><a href="#"><i class="fas fa-ticket"></i> Suporte</a></li>
+                </ul>
+            </div>
+
+            <div class="menu-section">
+                <ul class="sidebar-menu">
+                    <li><a href="index.html"><i class="fas fa-globe"></i> Voltar ao Site</a></li>
+                    <li><a href="login.html" style="color: #fd79a8;"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="panel-main">
+            <header class="panel-header">
+                <h1>Dashboard</h1>
+                <div class="user-menu">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Novo Servidor
+                    </a>
+                    <div class="user-info-display">
+                        <span class="user-name" id="userName">Usuário</span>
+                        <div class="user-avatar" id="userAvatar">U</div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="panel-content">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">2</div>
+                        <div class="stat-card-label">Servidores Ativos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">47</div>
+                        <div class="stat-card-label">Jogadores Online</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">12GB</div>
+                        <div class="stat-card-label">RAM Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-icon">
+                                <i class="fas fa-hard-drive"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">45GB</div>
+                        <div class="stat-card-label">Armazenamento Usado</div>
+                    </div>
+                </div>
+
+                <!-- Servers List -->
+                <div class="servers-section">
+                    <div class="servers-header">
+                        <h2><i class="fas fa-server"></i> Meus Servidores</h2>
+                        <a href="#" class="btn btn-outline">Ver Todos</a>
+                    </div>
+
+                    <div class="server-card">
+                        <div class="server-info">
+                            <div class="server-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <div class="server-details">
+                                <h3>MeuServidor Survival</h3>
+                                <p>Paper 1.20.4 • 6GB RAM • play.meuservidor.com</p>
+                            </div>
+                        </div>
+                        <div class="server-status online">Online • 23 jogadores</div>
+                        <div class="server-actions">
+                            <button class="btn btn-outline"><i class="fas fa-terminal"></i> Console</button>
+                            <button class="btn btn-primary"><i class="fas fa-cog"></i> Gerenciar</button>
+                        </div>
+                    </div>
+
+                    <div class="server-card">
+                        <div class="server-info">
+                            <div class="server-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <div class="server-details">
+                                <h3>Servidor PvP Arena</h3>
+                                <p>Spigot 1.20.4 • 6GB RAM • pvp.meuservidor.com</p>
+                            </div>
+                        </div>
+                        <div class="server-status online">Online • 24 jogadores</div>
+                        <div class="server-actions">
+                            <button class="btn btn-outline"><i class="fas fa-terminal"></i> Console</button>
+                            <button class="btn btn-primary"><i class="fas fa-cog"></i> Gerenciar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Manager Modal -->
+    <div class="modal-overlay" id="managerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-cog"></i> Gerenciar Servidor</h3>
+                <button class="modal-close" onclick="closeManager()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nome do Servidor</label>
+                    <input type="text" id="managerName">
+                </div>
+                <div class="form-group">
+                    <label>Domínio</label>
+                    <input type="text" id="managerAddress">
+                </div>
+                <div class="form-group">
+                    <label>Versão</label>
+                    <select id="managerType">
+                        <option value="Paper 1.20.4">Paper 1.20.4</option>
+                        <option value="Spigot 1.20.4">Spigot 1.20.4</option>
+                        <option value="Vanilla 1.20.4">Vanilla 1.20.4</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeManager()">Cancelar</button>
+                    <button class="btn btn-primary" onclick="saveManager()">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-body label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+        }
+
+        .modal-body input,
+        .modal-body select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 4px;
+        }
+
+        .modal-body input:focus,
+        .modal-body select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .console-modal {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-output {
+            flex: 1;
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: #ccc;
+            overflow-y: auto;
+            background: #000;
+        }
+
+        .console-input-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: #111;
+            border-top: 1px solid #333;
+        }
+
+        .console-input-area input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: monospace;
+            outline: none;
+        }
+
+        .console-input-area button {
+            padding: 5px 15px;
+            background: var(--primary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+
+    <script src="js/panel.js"></script>
+</body>
+
+</html>

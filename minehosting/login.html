@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MineHosting - Faça login na sua conta para gerenciar seus servidores Minecraft">
+    <title>Login - MineHosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
+                var(--bg-dark);
+            padding: 40px 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 50px 40px;
+            backdrop-filter: blur(20px);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header .logo {
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 25px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .login-form .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .login-form .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            accent-color: var(--primary);
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            transition: var(--transition-fast);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .login-divider span {
+            padding: 0 15px;
+        }
+
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .google-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            color: #444444;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .google-btn:hover {
+            background: #f5f5f5;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .google-btn i {
+            font-size: 1.2rem;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-secondary);
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        /* Google Login Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .google-modal {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #666;
+            transition: 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: #e0e0e0;
+        }
+
+        .google-modal-header {
+            margin-bottom: 30px;
+        }
+
+        .google-logo {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+
+        .google-modal-header h2 {
+            color: #202124;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .google-modal-header p {
+            color: #5f6368;
+            font-size: 0.95rem;
+        }
+
+        .google-accounts {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .google-account-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            text-align: left;
+        }
+
+        .google-account-btn:hover {
+            background: #e8f0fe;
+            border-color: #1a73e8;
+        }
+
+        .account-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .account-info {
+            flex: 1;
+        }
+
+        .account-info .name {
+            color: #202124;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .account-info .email {
+            color: #5f6368;
+            font-size: 0.85rem;
+        }
+
+        .use-another-account {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            color: #1a73e8;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+
+        .use-another-account:hover {
+            background: #e8f0fe;
+        }
+
+        .google-footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .google-footer p {
+            color: #5f6368;
+            font-size: 0.8rem;
+        }
+
+        .google-footer a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .google-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading state */
+        .loading-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .loading-state.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-state p {
+            color: #5f6368;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="login-page">
+        <div class="login-container">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao início
+            </a>
+
+            <div class="login-card">
+                <div class="login-header">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-cube"></i>
+                        <span>Mine<span class="highlight">Hosting</span></span>
+                    </a>
+                    <h1>Bem-vindo de volta!</h1>
+                    <p>Faça login para gerenciar seus servidores</p>
+                </div>
+
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox">
+                            Lembrar-me
+                        </label>
+                        <a href="recuperar-senha.html" class="forgot-password">Esqueceu a senha?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-large">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Entrar
+                    </button>
+                </form>
+
+                <div class="login-divider">
+                    <span>ou continue com</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="google-btn" id="googleLoginBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4"
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34A853"
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#FBBC05"
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                            <path fill="#EA4335"
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                        </svg>
+                        Continuar com Google
+                    </button>
+                </div>
+
+                <p class="register-link">
+                    Não tem uma conta? <a href="registro.html">Cadastre-se grátis</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Login Modal -->
+    <div class="modal-overlay" id="googleModal">
+        <div class="google-modal">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div id="modalContent">
+                <div class="google-modal-header">
+                    <svg class="google-logo" viewBox="0 0 74 24">
+                        <path fill="#4285F4"
+                            d="M9.24 8.19v2.46h5.88c-.18 1.38-.64 2.39-1.34 3.1-.86.86-2.2 1.8-4.54 1.8-3.62 0-6.45-2.92-6.45-6.54s2.83-6.54 6.45-6.54c1.95 0 3.38.77 4.43 1.76L15.4 2.5C13.94 1.08 11.98 0 9.24 0 4.28 0 .11 4.04.11 9s4.17 9 9.13 9c2.68 0 4.7-.88 6.28-2.52 1.62-1.62 2.13-3.91 2.13-5.75 0-.57-.04-1.1-.13-1.54H9.24z" />
+                        <path fill="#EA4335"
+                            d="M25 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z" />
+                        <path fill="#FBBC05"
+                            d="M53.58 7.49h-.09c-.57-.68-1.67-1.3-3.06-1.3C47.53 6.19 45 8.72 45 12c0 3.26 2.53 5.81 5.43 5.81 1.39 0 2.49-.62 3.06-1.32h.09v.81c0 2.22-1.19 3.41-3.1 3.41-1.56 0-2.53-1.12-2.93-2.07l-2.22.92c.64 1.54 2.33 3.43 5.15 3.43 2.99 0 5.52-1.76 5.52-6.05V6.49h-2.42v1zm-2.93 8.03c-1.76 0-3.1-1.5-3.1-3.52 0-2.05 1.34-3.52 3.1-3.52 1.74 0 3.1 1.5 3.1 3.54.01 2.03-1.36 3.5-3.1 3.5z" />
+                        <path fill="#4285F4"
+                            d="M38 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z" />
+                        <path fill="#34A853" d="M58 .24h2.51v17.57H58z" />
+                        <path fill="#EA4335"
+                            d="M68.26 15.52c-1.3 0-2.22-.59-2.82-1.76l7.77-3.21-.26-.66c-.48-1.3-1.96-3.7-4.97-3.7-2.99 0-5.48 2.35-5.48 5.81 0 3.26 2.46 5.81 5.76 5.81 2.66 0 4.2-1.63 4.84-2.57l-1.98-1.32c-.66.96-1.56 1.6-2.86 1.6zm-.18-7.15c1.03 0 1.91.53 2.2 1.28l-5.25 2.17c0-2.44 1.73-3.45 3.05-3.45z" />
+                    </svg>
+                    <h2>Fazer login</h2>
+                    <p>para continuar no MineHosting</p>
+                </div>
+
+                <div class="google-accounts">
+                    <button class="google-account-btn" onclick="loginWithGoogle('João Silva', 'joao.silva@gmail.com')">
+                        <div class="account-avatar">J</div>
+                        <div class="account-info">
+                            <div class="name">João Silva</div>
+                            <div class="email">joao.silva@gmail.com</div>
+                        </div>
+                    </button>
+                </div>
+
+                <button class="use-another-account" onclick="useAnotherAccount()">
+                    <i class="fas fa-user-plus"></i>
+                    Usar outra conta
+                </button>
+
+                <div class="google-footer">
+                    <p>Para continuar, o Google compartilhará seu nome, email e foto do perfil com MineHosting. Veja a
+                        <a href="privacidade.html">política de privacidade</a> e os <a href="termos.html">termos de
+                            serviço</a> do MineHosting.
+                    </p>
+                </div>
+            </div>
+
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <p>Conectando com Google...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Email/Password Login
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const btn = this.querySelector('button[type="submit"]');
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            btn.disabled = true;
+
+            setTimeout(function () {
+                localStorage.setItem('user_email', email);
+                localStorage.setItem('isAuthenticated', 'true');
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnUrl = urlParams.get('returnUrl');
+
+                if (returnUrl) {
+                    window.location.href = returnUrl;
+                } else {
+                    window.location.href = 'painel.html';
+                }
+            }, 1500);
+        });
+
+        // Google Login Modal
+        const googleModal = document.getElementById('googleModal');
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const closeModal = document.getElementById('closeModal');
+        const modalContent = document.getElementById('modalContent');
+        const loadingState = document.getElementById('loadingState');
+
+        googleLoginBtn.addEventListener('click', function () {
+            googleModal.classList.add('active');
+        });
+
+        closeModal.addEventListener('click', function () {
+            googleModal.classList.remove('active');
+        });
+
+        googleModal.addEventListener('click', function (e) {
+            if (e.target === googleModal) {
+                googleModal.classList.remove('active');
+            }
+        });
+
+        function loginWithGoogle(name, email) {
+            modalContent.style.display = 'none';
+            loadingState.classList.add('active');
+
+            setTimeout(function () {
+                // Store user info
+                localStorage.setItem('user_name', name);
+                localStorage.setItem('user_email', email);
+                localStorage.setItem('login_method', 'google');
+                localStorage.setItem('isAuthenticated', 'true'); // Set authenticated flag
+
+                // Check for return URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnUrl = urlParams.get('returnUrl');
+
+                if (returnUrl) {
+                    window.location.href = returnUrl;
+                } else {
+                    window.location.href = 'painel.html';
+                }
+            }, 2000);
+        }
+
+        function useAnotherAccount() {
+            // In a real implementation, this would redirect to Google's OAuth
+            alert('Em uma implementação real, você seria redirecionado para a página de login do Google para escolher ou adicionar uma conta.');
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && googleModal.classList.contains('active')) {
+                googleModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
