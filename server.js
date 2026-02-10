@@ -4,6 +4,11 @@ require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('./'));
+
+// Inicie o Stripe com sua chave secreta
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_51SzJzVPJmaheIHPbgnKBdUsVyQ0RzVWDraLIbAC0EvQvp5o76CQvWiH27nsL9hSYhI69iArxTbrmvoSlxV1rbHjD00a6YMsrB1');
 
 // Configurações
 const GITHUB_PAT = process.env.GITHUB_PAT; // Seu Personal Access Token
@@ -182,6 +187,69 @@ app.delete('/api/codespaces/:codespaceName', async (req, res) => {
       error: 'Erro ao deletar Codespace',
       message: error.message,
     });
+  }
+});
+
+/**
+ * POST /create-checkout-session
+ * Cria uma sessão de checkout do Stripe
+ */
+app.post('/create-checkout-session', async (req, res) => {
+  try {
+    const { lookup_key } = req.body;
+    console.log(`[Stripe] Iniciando checkout para: ${lookup_key}`);
+
+    // No exemplo do Stripe, se usa lookup_keys para buscar o preço
+    // Aqui usaremos IDs fixos de teste ou simularemos a busca
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: 'brl',
+            product_data: {
+              name: `Plano ${lookup_key.charAt(0).toUpperCase() + lookup_key.slice(1)}`,
+            },
+            unit_amount: lookup_key === 'starter' ? 1900 : (lookup_key === 'pro' ? 4900 : 9900),
+            recurring: {
+              interval: 'month',
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      success_url: `${req.headers.origin}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/pagamento.html?plano=${lookup_key}`,
+    });
+
+    res.redirect(303, session.url);
+  } catch (error) {
+    console.error('[Stripe Erro]', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /create-portal-session
+ * Cria uma sessão do portal de faturamento do Stripe
+ */
+app.post('/create-portal-session', async (req, res) => {
+  try {
+    const { session_id } = req.body;
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+
+    // Esta é a URL para a qual os usuários serão redirecionados após gerenciarem o faturamento.
+    const returnUrl = `${req.headers.origin}`;
+
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: checkoutSession.customer,
+      return_url: returnUrl,
+    });
+
+    res.redirect(303, portalSession.url);
+  } catch (error) {
+    console.error('[Stripe Portal Erro]', error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 
