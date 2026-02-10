@@ -1,156 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MineHosting - Hub de Pagamento Seguro">
-    <title>Pagamento - MineHosting</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Inscrição - MineHosting</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        .payment-page {
-            min-height: 100vh;
-            padding-top: 120px;
-            padding-bottom: 80px;
-            background: var(--bg-dark);
+        /* Estilos extras para centralizar e melhorar a experiência */
+        body {
+            background: #0a0a0f;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
 
-        .stripe-section {
+        section {
             background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            width: 400px;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            margin: 20px;
-        }
-
-        .stripe-product {
-            display: flex;
             padding: 20px;
-            align-items: center;
-            gap: 20px;
-            background: #f8f9fe;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .stripe-product svg {
-            width: 54px;
-            height: 57px;
-            background: #e184df;
-            padding: 10px;
-            border-radius: 12px;
-        }
-
-        .stripe-description h3 {
-            font-size: 1.1rem;
-            color: #242d60;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        .stripe-description h5 {
-            font-size: 0.9rem;
-            color: #242d60;
-            opacity: 0.6;
-            margin: 5px 0 0 0;
-            font-weight: 500;
-        }
-
-        #checkout-and-portal-button {
-            height: 55px;
-            background: var(--primary);
-            color: var(--bg-dark);
-            width: 100%;
-            font-size: 1.1rem;
-            border: 0;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        #checkout-and-portal-button:hover {
-            background: #00f2c3;
-            transform: translateY(-2px);
-        }
-
-        .back-link {
+        .back-btn {
             display: block;
+            margin-top: 15px;
             text-align: center;
-            margin-top: 20px;
-            color: var(--text-muted);
+            color: #666;
             text-decoration: none;
             font-size: 0.9rem;
-            transition: var(--transition-normal);
         }
 
-        .back-link:hover {
-            color: var(--primary);
+        .back-btn:hover {
+            color: #00d4aa;
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <i class="fas fa-cube"></i>
-                <span>Mine<span class="highlight">Hosting</span></span>
-            </a>
-        </div>
-    </nav>
-
-    <main class="payment-page">
-        <div class="container" style="display: flex; flex-direction: column; align-items: center;">
-            <div class="stripe-section">
-                <div class="stripe-product">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        viewBox="0 0 14 16">
-                        <path fill="#ffffff"
-                            d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z"
-                            transform="translate(-121, -40)" />
-                    </svg>
-                    <div class="stripe-description">
-                        <h3 id="plan-name">Plano Starter</h3>
-                        <h5 id="plan-price">R$ 19,00 / mês</h5>
-                    </div>
-                </div>
-                <form action="/create-checkout-session" method="POST">
-                    <input type="hidden" id="lookup_key" name="lookup_key" value="starter" />
-                    <button id="checkout-and-portal-button" type="submit">Finalizar Compra</button>
-                </form>
+    <section>
+        <div class="product">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14px" height="16px" viewBox="0 0 14 16">
+                <path fill="#E184DF"
+                    d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z"
+                    transform="translate(-121, -40)" />
+            </svg>
+            <div class="description">
+                <h3 id="plan-name">Plano Starter</h3>
+                <h5 id="plan-price">R$ 19,00 / mês</h5>
             </div>
-            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar para os planos</a>
         </div>
-    </main>
+        <form action="/create-checkout-session" method="POST">
+            <input type="hidden" id="lookup_key" name="lookup_key" value="starter" />
+            <button id="checkout-and-portal-button" type="submit">Checkout</button>
+        </form>
+        <a href="index.html" class="back-btn">← Voltar</a>
+    </section>
 
     <script>
-        // Obter plano da URL
+        // Obter o plano da URL (ex: pagamento.html?plano=pro)
         const urlParams = new URLSearchParams(window.location.search);
         const plano = urlParams.get('plano') || 'starter';
 
-        const planos = {
-            'starter': { name: 'Plano Starter', price: 'R$ 19,00 / mês', key: 'starter' },
-            'pro': { name: 'Plano Pro', price: 'R$ 49,00 / mês', key: 'pro' },
-            'ultimate': { name: 'Plano Ultimate', price: 'R$ 99,00 / mês', key: 'ultimate' }
+        const config = {
+            'starter': { name: 'Plano Starter', price: 'R$ 19,00 / mês' },
+            'pro': { name: 'Plano Pro', price: 'R$ 49,00 / mês' },
+            'ultimate': { name: 'Plano Ultimate', price: 'R$ 99,00 / mês' }
         };
 
-        if (planos[plano]) {
-            document.getElementById('plan-name').textContent = planos[plano].name;
-            document.getElementById('plan-price').textContent = planos[plano].price;
-            document.getElementById('lookup_key').value = planos[plano].key;
+        if (config[plano]) {
+            document.getElementById('plan-name').textContent = config[plano].name;
+            document.getElementById('plan-price').textContent = config[plano].price;
+            document.getElementById('lookup_key').value = plano;
         }
     </script>
 </body>
