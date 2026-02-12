@@ -500,18 +500,61 @@
 
     <script src="js/main.js"></script>
     <script>
+        /**
+         * Mostra mensagem de erro no formulário
+         */
+        function showError(message) {
+            let errorDiv = document.getElementById('loginError');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.id = 'loginError';
+                errorDiv.style.cssText = 'background: rgba(253, 121, 168, 0.1); border: 1px solid rgba(253, 121, 168, 0.3); border-radius: 8px; padding: 15px; margin-bottom: 20px; color: #fd79a8; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;';
+                document.getElementById('loginForm').parentElement.insertBefore(errorDiv, document.getElementById('loginForm'));
+            }
+            errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function clearError() {
+            const errorDiv = document.getElementById('loginError');
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+            }
+        }
+
         // Email/Password Login
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
+            clearError();
+
             const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             const btn = this.querySelector('button[type="submit"]');
+
+            // Verificar se o usuário existe no banco de dados
+            const users = JSON.parse(localStorage.getItem('minehosting_users') || '{}');
+            
+            if (!users[email]) {
+                showError('Conta não encontrada. <a href="registro.html" style="color: #00d4aa; text-decoration: underline;">Crie uma conta</a>');
+                btn.style.pointerEvents = 'auto';
+                return;
+            }
+
+            // Verificar se a senha está correta
+            if (users[email].password !== password) {
+                showError('Email ou senha incorretos.');
+                return;
+            }
 
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
             btn.disabled = true;
 
             setTimeout(function () {
                 localStorage.setItem('user_email', email);
+                localStorage.setItem('user_name', users[email].name);
                 localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('login_method', 'email');
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const returnUrl = urlParams.get('returnUrl');

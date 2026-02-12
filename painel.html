@@ -103,6 +103,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            position: relative;
         }
 
         .user-avatar {
@@ -116,6 +117,59 @@
             color: var(--bg-dark);
             font-weight: 700;
             cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 0;
+            background: var(--bg-darker);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            min-width: 200px;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--text-primary);
+            transition: var(--transition-fast);
+            border: none;
+            background: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--primary);
+            padding-left: 24px;
+        }
+
+        .user-dropdown a.logout {
+            color: #fd79a8;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-dropdown a.logout:hover {
+            background: rgba(253, 121, 168, 0.1);
+            color: #ff9cc6;
         }
 
         .user-info-display {
@@ -402,7 +456,7 @@
             <div class="menu-section">
                 <ul class="sidebar-menu">
                     <li><a href="index.html"><i class="fas fa-globe"></i> Voltar ao Site</a></li>
-                    <li><a href="login.html" style="color: #fd79a8;"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    <li><a href="#" onclick="logout(); return false;" style="color: #fd79a8;"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                 </ul>
             </div>
         </aside>
@@ -418,7 +472,12 @@
                     </a>
                     <div class="user-info-display">
                         <span class="user-name" id="userName">Usuário</span>
-                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown(event)">U</div>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="painel.html"><i class="fas fa-user"></i> Meu Perfil</a>
+                        <a href="#"><i class="fas fa-cog"></i> Configurações</a>
+                        <a href="#" class="logout" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Sair</a>
                     </div>
                 </div>
             </header>

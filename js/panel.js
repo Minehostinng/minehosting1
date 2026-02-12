@@ -69,8 +69,30 @@ function logout() {
     localStorage.removeItem('user_name');
     localStorage.removeItem('user_email');
     localStorage.removeItem('login_method');
-    window.location.href = 'index.html';
+    // Pequeno delay para feedback visual
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 100);
 }
+
+/* ================================
+   User Menu Dropdown
+   ================================ */
+function toggleUserDropdown(event) {
+    event.preventDefault();
+    const dropdown = document.getElementById('userDropdown');
+    dropdown.classList.toggle('active');
+}
+
+// Fechar dropdown quando clicar fora
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdown');
+    const userAvatar = document.getElementById('userAvatar');
+    
+    if (dropdown && !event.target.closest('.user-menu')) {
+        dropdown.classList.remove('active');
+    }
+});
 
 /* ================================
    Panel Functionality

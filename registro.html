@@ -272,12 +272,27 @@
                 return;
             }
 
+            // Verificar se o email já está registrado
+            const users = JSON.parse(localStorage.getItem('minehosting_users') || '{}');
+            if (users[email]) {
+                alert('Este email já está registrado! Faça login ou use outro email.');
+                return;
+            }
+
             const btn = this.querySelector('button[type="submit"]');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
             btn.disabled = true;
 
-            // Salva os dados do usuário no localStorage
+            // Salva os dados do usuário no banco de usuários
             const fullName = firstName + ' ' + lastName;
+            users[email] = {
+                name: fullName,
+                email: email,
+                password: password, // Em produção, usar hash!
+                createdAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('minehosting_users', JSON.stringify(users));
             localStorage.setItem('user_name', fullName);
             localStorage.setItem('user_email', email);
             localStorage.setItem('login_method', 'email');
