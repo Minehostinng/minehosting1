@@ -3,6 +3,11 @@ const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
+const path = require('path');
+
+// Servir arquivos estáticos (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, '..')));
+
 app.use(express.json());
 
 // Configurações GitHub API
