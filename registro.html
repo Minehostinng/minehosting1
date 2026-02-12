@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MineHosting - Crie sua conta e comece a hospedar seu servidor Minecraft agora">
+    <title>Cadastro - MineHosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
+                var(--bg-dark);
+            padding: 40px 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 50px 40px;
+            backdrop-filter: blur(20px);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .register-header .logo {
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .register-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: var(--text-secondary);
+        }
+
+        .register-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .register-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .register-form .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .register-form .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .terms-checkbox input {
+            accent-color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .terms-checkbox a {
+            color: var(--primary);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-secondary);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        .benefits-list {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .benefits-list h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .benefits-list ul {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .benefits-list li i {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-list ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="register-page">
+        <div class="register-container">
+            <a href="index.html" class="back-home">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao início
+            </a>
+
+            <div class="register-card">
+                <div class="register-header">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-cube"></i>
+                        <span>Mine<span class="highlight">Hosting</span></span>
+                    </a>
+                    <h1>Crie sua conta</h1>
+                    <p>E comece sua aventura agora mesmo!</p>
+                </div>
+
+                <div class="benefits-list">
+                    <h4><i class="fas fa-gift"></i> O que você ganha ao se cadastrar:</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Painel intuitivo</li>
+                        <li><i class="fas fa-check"></i> Suporte 24/7</li>
+                        <li><i class="fas fa-check"></i> Backups automáticos</li>
+                        <li><i class="fas fa-check"></i> Proteção DDoS</li>
+                    </ul>
+                </div>
+
+                <form class="register-form" id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nome</label>
+                            <input type="text" id="firstName" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Sobrenome</label>
+                            <input type="text" id="lastName" placeholder="Seu sobrenome" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" placeholder="Mínimo 8 caracteres" required minlength="8">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar Senha</label>
+                        <input type="password" id="confirmPassword" placeholder="Repita a senha" required>
+                    </div>
+
+                    <label class="terms-checkbox">
+                        <input type="checkbox" required>
+                        <span>Eu concordo com os <a href="termos.html" target="_blank">Termos de Uso</a> e <a
+                                href="privacidade.html" target="_blank">Política de Privacidade</a></span>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-large">
+                        <i class="fas fa-user-plus"></i>
+                        Criar Conta
+                    </button>
+                </form>
+
+                <p class="login-link">
+                    Já tem uma conta? <a href="login.html">Faça login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            const btn = this.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+            btn.disabled = true;
+
+            // Salva os dados do usuário no localStorage
+            const fullName = firstName + ' ' + lastName;
+            localStorage.setItem('user_name', fullName);
+            localStorage.setItem('user_email', email);
+            localStorage.setItem('login_method', 'email');
+
+            setTimeout(function () {
+                alert('Conta criada com sucesso! Você será redirecionado para o painel.');
+                window.location.href = 'painel.html';
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>
