@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MineHosting - Central de Ajuda e Suporte">
+    <title>Central de Ajuda - MineHosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .help-page {
+            min-height: 100vh;
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        .help-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .help-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .help-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .help-header p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 20px 25px 20px 60px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: var(--transition-fast);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .help-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .help-category {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .help-category:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .help-category-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+            color: var(--bg-dark);
+        }
+
+        .help-category h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .help-category p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .popular-articles {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+        }
+
+        .popular-articles h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        .article-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .article-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .article-item:hover {
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        .article-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .article-item span {
+            flex: 1;
+        }
+
+        .article-item .arrow {
+            color: var(--text-muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .help-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cube"></i>
+                <span>Mine<span class="highlight">Hosting</span></span>
+            </a>
+            <div class="nav-buttons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="registro.html" class="btn btn-primary">Começar Agora</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="help-page">
+        <div class="help-container">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao início
+            </a>
+
+            <div class="help-header">
+                <h1>Central de <span class="gradient-text">Ajuda</span></h1>
+                <p>Como podemos ajudar você hoje?</p>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar artigos de ajuda...">
+                </div>
+            </div>
+
+            <div class="help-categories">
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Primeiros Passos</h3>
+                    <p>Aprenda a configurar seu primeiro servidor</p>
+                </div>
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>Gerenciamento</h3>
+                    <p>Como gerenciar seu servidor pelo painel</p>
+                </div>
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3>Plugins e Mods</h3>
+                    <p>Instale e configure plugins e modpacks</p>
+                </div>
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3>Pagamentos</h3>
+                    <p>Faturas, renovações e upgrades</p>
+                </div>
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3>Segurança</h3>
+                    <p>Proteção e configurações de segurança</p>
+                </div>
+                <div class="help-category">
+                    <div class="help-category-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <h3>Solução de Problemas</h3>
+                    <p>Resolva problemas comuns</p>
+                </div>
+            </div>
+
+            <div class="popular-articles">
+                <h2><i class="fas fa-fire"></i> Artigos Populares</h2>
+                <div class="article-list">
+                    <div class="article-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Como acessar o painel de controle do meu servidor</span>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </div>
+                    <div class="article-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Como instalar plugins no meu servidor Minecraft</span>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </div>
+                    <div class="article-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Como fazer backup do meu servidor</span>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </div>
+                    <div class="article-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Como alterar a versão do Minecraft</span>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </div>
+                    <div class="article-item">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Como configurar um domínio personalizado</span>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section"
+                style="margin-top: 60px; text-align: center; padding: 50px 40px; background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--radius-lg);">
+                <div class="contact-icon"
+                    style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 2rem; color: var(--bg-dark);">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h2 style="font-size: 1.8rem; margin-bottom: 15px;">Ainda precisa de <span
+                        class="gradient-text">ajuda</span>?</h2>
+                <p
+                    style="color: var(--text-secondary); margin-bottom: 25px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    Nossa equipe de suporte está pronta para ajudar você. Entre em contato por email e responderemos o
+                    mais rápido possível.
+                </p>
+                <a href="mailto:minehostng@gmail.com" class="btn btn-primary"
+                    style="display: inline-flex; align-items: center; gap: 10px; padding: 15px 35px; font-size: 1.1rem;">
+                    <i class="fas fa-paper-plane"></i>
+                    minehostng@gmail.com
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="background: var(--bg-card); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 50px 0 30px; margin-top: 80px;">
+        <div class="help-container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+                <!-- Logo e Descrição -->
+                <div>
+                    <a href="index.html" class="logo"
+                        style="display: inline-flex; align-items: center; gap: 10px; font-size: 1.5rem; font-weight: 700; margin-bottom: 15px;">
+                        <i class="fas fa-cube" style="color: var(--primary);"></i>
+                        <span>Mine<span style="color: var(--primary);">Hosting</span></span>
+                    </a>
+                    <p style="color: var(--text-muted); line-height: 1.7;">
+                        A melhor hospedagem de servidores Minecraft do Brasil. Performance, segurança e suporte 24/7.
+                    </p>
+                </div>
+
+                <!-- Links Rápidos -->
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 20px; color: var(--text-primary);">Links Rápidos</h4>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li><a href="index.html" style="color: var(--text-muted); transition: color 0.3s;">Início</a>
+                        </li>
+                        <li><a href="login.html" style="color: var(--text-muted); transition: color 0.3s;">Login</a>
+                        </li>
+                        <li><a href="registro.html"
+                                style="color: var(--text-muted); transition: color 0.3s;">Registrar</a></li>
+                        <li><a href="ajuda.html" style="color: var(--text-muted); transition: color 0.3s;">Central de
+                                Ajuda</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contato -->
+                <div>
+                    <h4 style="font-size: 1.1rem; margin-bottom: 20px; color: var(--text-primary);">Contato</h4>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-muted);">
+                            <i class="fas fa-envelope" style="color: var(--primary);"></i>
+                            <a href="mailto:minehostng@gmail.com"
+                                style="color: var(--text-muted); transition: color 0.3s;">minehostng@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 25px; text-align: center;">
+                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                    © 2026 MineHosting. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
