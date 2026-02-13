@@ -13,7 +13,7 @@
     "NODE_ENV"
   ],
   "functions": {
-    "js/server.js": {
+    "api/server.js": {
       "runtime": "nodejs18.x",
       "maxDuration": 30
     }
@@ -21,11 +21,15 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "js/server.js"
+      "destination": "/api/server.js"
     },
     {
       "source": "/auth/(.*)",
-      "destination": "js/server.js"
+      "destination": "/api/server.js"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/server.js"
     }
   ]
 }
