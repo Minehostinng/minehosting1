@@ -241,8 +241,6 @@ app.post('/api/codespaces/create', async (req, res) => {
       return res.status(500).json({ error: 'GITHUB_PAT não configurado no servidor' });
     }
 
-    console.log(`[Criando Codespace] para usuário: ${username}`);
-
     // Requisição para criar Codespace
     const response = await axios.post(
       `${GITHUB_API_URL}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/codespaces`,
@@ -272,9 +270,6 @@ app.post('/api/codespaces/create', async (req, res) => {
       machineType: response.data.machine.name,
     };
 
-    console.log(`[✓ Sucesso] Codespace criado: ${codespaceData.name}`);
-    console.log(`[URL] ${codespaceData.webUrl}`);
-
     // Aqui você deve SALVAR os dados no seu banco de dados
     // Exemplo: await Database.saveCodespace(username, userEmail, codespaceData);
 
@@ -284,7 +279,8 @@ app.post('/api/codespaces/create', async (req, res) => {
       data: codespaceData,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.response?.data || error.message);
+    // Log apenas para debugging em desenvolvimento
+    if (process.env.DEBUG) console.error('[Erro Criar Codespace]', error.response?.data || error.message);
 
     if (error.response?.status === 403) {
       return res.status(403).json({
@@ -347,7 +343,7 @@ app.get('/api/codespaces/:username', async (req, res) => {
       codespaces: userCodespaces,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.message);
+    if (process.env.DEBUG) console.error('[Erro Listar Codespaces]', error.message);
     res.status(error.response?.status || 500).json({
       error: 'Erro ao listar Codespaces',
       message: error.message,
@@ -377,18 +373,151 @@ app.delete('/api/codespaces/:codespaceName', async (req, res) => {
       }
     );
 
-    console.log(`[✓ Sucesso] Codespace deletado: ${codespaceName}`);
-
     res.json({
       success: true,
       message: `Codespace ${codespaceName} foi deletado com sucesso.`,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.message);
+    if (process.env.DEBUG) console.error('[Erro Deletar Codespace]', error.message);
     res.status(error.response?.status || 500).json({
       error: 'Erro ao deletar Codespace',
       message: error.message,
     });
+  }
+});
+
+/**
+ * GET /api/auth/github/login
+ * Redireciona para o GitHub para iniciar o OAuth
+ */
+app.get('/api/auth/github/login', (req, res) => {
+  const scope = 'read:user user:email repo';
+  const url = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${CALLBACK_URL}&scope=${scope}`;
+  res.redirect(url);
+});
+
+/**
+ * GET /api/auth/github/callback
+ * Recebe o código do GitHub e troca por um token de acesso
+ */
+app.get('/api/auth/github/callback', async (req, res) => {
+  const { code } = req.query;
+
+  try {
+    // Trocar código por token de acesso
+    const tokenResponse = await axios.post(
+      'https://github.com/login/oauth/access_token',
+      {
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
+        code: code,
+      },
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
+
+    const accessToken = tokenResponse.data.access_token;
+
+    // Buscar dados do usuário
+    const userResponse = await axios.get(`${GITHUB_API_URL}/user`, {
+      headers: {
+        Authorization: `token ${accessToken}`,
+      },
+    });
+
+    // Buscar email principal do usuário
+    const emailsResponse = await axios.get(`${GITHUB_API_URL}/user/emails`, {
+      headers: {
+        Authorization: `token ${accessToken}`,
+      },
+    });
+
+    const primaryEmail = emailsResponse.data.find(email => email.primary)?.email;
+
+    const userData = {
+      id: userResponse.data.id,
+      login: userResponse.data.login,
+      name: userResponse.data.name || userResponse.data.login,
+      email: primaryEmail,
+      avatar: userResponse.data.avatar_url,
+    };
+
+    // --- CRIAÇÃO AUTOMÁTICA DO REPOSITÓRIO E CODESPACE ---
+    let repoReady = false;
+
+    try {
+      await axios.post(
+        `${GITHUB_API_URL}/user/repos`,
+        {
+          name: 'minehosting',
+          description: 'Repositório criado automaticamente via MineHosting',
+          private: false,
+          auto_init: true
+        },
+        {
+          headers: {
+            Authorization: `token ${accessToken}`,
+            Accept: 'application/vnd.github.v3+json',
+          },
+        }
+      );
+      if (process.env.DEBUG) console.log(`[✓] Repositório 'minehosting' criado.`);
+      repoReady = true;
+    } catch (repoError) {
+      if (repoError.response?.status === 422) {
+        if (process.env.DEBUG) console.log(`[!] Repositório 'minehosting' já existe.`);
+        repoReady = true;
+      } else if (process.env.DEBUG) {
+        console.error('[✗ Erro Repo]', repoError.response?.data || repoError.message);
+      }
+    }
+
+    if (repoReady) {
+      if (process.env.DEBUG) console.log(`[Codespace Creation] Criando Codespace para ${userData.login}/minehosting`);
+      try {
+        // Aguarda um pequeno delay para o GitHub processar a criação do repo
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        await axios.post(
+          `${GITHUB_API_URL}/repos/${userData.login}/minehosting/codespaces`,
+          {
+            ref: 'main',
+            machine: 'largeLinux', // largeLinux = 4 Cores, 16GB RAM
+            display_name: 'Servidor MineHosting Pro'
+          },
+          {
+            headers: {
+              Authorization: `token ${accessToken}`,
+              Accept: 'application/vnd.github.v3+json',
+            },
+          }
+        );
+        console.log(`[✓ Sucesso] Codespace de alto desempenho criado para ${userData.login}`);
+      } catch (csError) {
+        console.error('[✗ Erro Codespace]', csError.response?.data || csError.message);
+      }
+    }
+    // -----------------------------------------------------
+
+    // Aqui você pode salvar/atualizar o usuário no banco de dados
+    // E gerar um JWT ou sessão para o seu sistema
+
+    // Redirecionar de volta para o front-end com os dados (apenas para demonstração/protótipo)
+    // Em produção, use cookies seguros ou tokens
+    const queryParams = new URLSearchParams({
+      name: userData.name,
+      email: userData.email,
+      username: userData.login,
+      success: 'true'
+    }).toString();
+
+    res.redirect(`/painel.html?${queryParams}`);
+  } catch (error) {
+    if (process.env.DEBUG) console.error('[OAuth Error]', error.message);
+    res.redirect('/login.html?error=auth_failed');
   }
 });
 
@@ -400,9 +529,11 @@ app.get('/health', (req, res) => {
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-  console.log(`📁 Repositório: ${GITHUB_OWNER}/${GITHUB_REPO}`);
-  console.log(`🔐 PAT configurado: ${GITHUB_PAT ? 'Sim' : 'Não'}`);
+  console.log(`✓ Servidor iniciado em http://localhost:${PORT}`);
+  if (process.env.DEBUG) {
+    console.log(`📁 Repositório: ${GITHUB_OWNER}/${GITHUB_REPO}`);
+    console.log(`🔐 PAT configurado: ${GITHUB_PAT ? 'Sim' : 'Não'}`);
+  }
 });
 
 module.exports = app;

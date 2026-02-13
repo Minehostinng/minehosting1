@@ -371,10 +371,10 @@ function appendLogToUI(text) {
 /* ================================
    Modals
    ================================ */
-let activeServerIdManger = null;
+let activeServerIdManager = null;
 
 function openManager(serverId) {
-    activeServerIdManger = serverId;
+    activeServerIdManager = serverId;
     const server = servers[serverId];
 
     document.getElementById('managerName').value = server.name;
@@ -386,13 +386,13 @@ function openManager(serverId) {
 
 function closeManager() {
     document.getElementById('managerModal').classList.remove('active');
-    activeServerIdManger = null;
+    activeServerIdManager = null;
 }
 
 function saveManager() {
-    if (!activeServerIdManger) return;
+    if (!activeServerIdManager) return;
 
-    const server = servers[activeServerIdManger];
+    const server = servers[activeServerIdManager];
     server.name = document.getElementById('managerName').value;
     server.address = document.getElementById('managerAddress').value;
     // Em um app real, atualizariamos o tipo também com validação
