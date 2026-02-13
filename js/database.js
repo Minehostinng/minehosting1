@@ -218,7 +218,7 @@ class Database {
   /**
    * Registrar ação (log)
    */
-  async logAcao(usuarioId, codespacceId, acao, detalhes, statusCode) {
+  async logAcao(usuarioId, codespaceId, acao, detalhes, statusCode) {
     const query = `
       INSERT INTO codespaces_logs (usuario_id, codespace_id, acao, detalhes, status_code)
       VALUES ($1, $2, $3, $4, $5)
@@ -226,7 +226,7 @@ class Database {
 
     await this.pool.query(query, [
       usuarioId,
-      codespacceId,
+      codespaceId,
       acao,
       detalhes,
       statusCode,
@@ -251,14 +251,14 @@ class Database {
   /**
    * Obter logs de um Codespace
    */
-  async obterLogsDoCodespace(codespacceId) {
+  async obterLogsDoCodespace(codespaceId) {
     const query = `
       SELECT * FROM codespaces_logs
       WHERE codespace_id = $1
       ORDER BY criado_em DESC
     `;
 
-    const result = await this.pool.query(query, [codespacceId]);
+    const result = await this.pool.query(query, [codespaceId]);
     return result.rows;
   }
 

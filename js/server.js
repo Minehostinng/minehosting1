@@ -44,8 +44,6 @@ app.post('/api/codespaces/create', async (req, res) => {
       return res.status(500).json({ error: 'GITHUB_PAT não configurado no servidor' });
     }
 
-    console.log(`[Criando Codespace] para usuário: ${username}`);
-
     // Requisição para criar Codespace
     const response = await axios.post(
       `${GITHUB_API_URL}/repos/${GITHUB_OWNER}/${GITHUB_REPO}/codespaces`,
@@ -75,9 +73,6 @@ app.post('/api/codespaces/create', async (req, res) => {
       machineType: response.data.machine.name,
     };
 
-    console.log(`[✓ Sucesso] Codespace criado: ${codespaceData.name}`);
-    console.log(`[URL] ${codespaceData.webUrl}`);
-
     // Aqui você deve SALVAR os dados no seu banco de dados
     // Exemplo: await Database.saveCodespace(username, userEmail, codespaceData);
 
@@ -87,7 +82,8 @@ app.post('/api/codespaces/create', async (req, res) => {
       data: codespaceData,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.response?.data || error.message);
+    // Log apenas para debugging em desenvolvimento
+    if (process.env.DEBUG) console.error('[Erro Criar Codespace]', error.response?.data || error.message);
 
     if (error.response?.status === 403) {
       return res.status(403).json({
@@ -150,7 +146,7 @@ app.get('/api/codespaces/:username', async (req, res) => {
       codespaces: userCodespaces,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.message);
+    if (process.env.DEBUG) console.error('[Erro Listar Codespaces]', error.message);
     res.status(error.response?.status || 500).json({
       error: 'Erro ao listar Codespaces',
       message: error.message,
@@ -180,14 +176,12 @@ app.delete('/api/codespaces/:codespaceName', async (req, res) => {
       }
     );
 
-    console.log(`[✓ Sucesso] Codespace deletado: ${codespaceName}`);
-
     res.json({
       success: true,
       message: `Codespace ${codespaceName} foi deletado com sucesso.`,
     });
   } catch (error) {
-    console.error('[✗ Erro]', error.message);
+    if (process.env.DEBUG) console.error('[Erro Deletar Codespace]', error.message);
     res.status(error.response?.status || 500).json({
       error: 'Erro ao deletar Codespace',
       message: error.message,
@@ -255,7 +249,6 @@ app.get('/api/auth/github/callback', async (req, res) => {
     };
 
     // --- CRIAÇÃO AUTOMÁTICA DO REPOSITÓRIO E CODESPACE ---
-    console.log(`[Flow] Iniciando automação para ${userData.login}`);
     let repoReady = false;
 
     try {
@@ -274,19 +267,19 @@ app.get('/api/auth/github/callback', async (req, res) => {
           },
         }
       );
-      console.log(`[✓] Repositório 'minehosting' criado.`);
+      if (process.env.DEBUG) console.log(`[✓] Repositório 'minehosting' criado.`);
       repoReady = true;
     } catch (repoError) {
       if (repoError.response?.status === 422) {
-        console.log(`[!] O repositório 'minehosting' já existe.`);
+        if (process.env.DEBUG) console.log(`[!] Repositório 'minehosting' já existe.`);
         repoReady = true;
-      } else {
+      } else if (process.env.DEBUG) {
         console.error('[✗ Erro Repo]', repoError.response?.data || repoError.message);
       }
     }
 
     if (repoReady) {
-      console.log(`[Codespace Creation] Tentando criar Codespace 4-Core/16GB para ${userData.login}/minehosting`);
+      if (process.env.DEBUG) console.log(`[Codespace Creation] Criando Codespace para ${userData.login}/minehosting`);
       try {
         // Aguarda um pequeno delay para o GitHub processar a criação do repo
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -326,7 +319,7 @@ app.get('/api/auth/github/callback', async (req, res) => {
 
     res.redirect(`/painel.html?${queryParams}`);
   } catch (error) {
-    console.error('[OAuth Error]', error.message);
+    if (process.env.DEBUG) console.error('[OAuth Error]', error.message);
     res.redirect('/login.html?error=auth_failed');
   }
 });
@@ -339,9 +332,11 @@ app.get('/health', (req, res) => {
 // Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
-  console.log(`📁 Repositório: ${GITHUB_OWNER}/${GITHUB_REPO}`);
-  console.log(`🔐 PAT configurado: ${GITHUB_PAT ? 'Sim' : 'Não'}`);
+  console.log(`✓ Servidor iniciado em http://localhost:${PORT}`);
+  if (process.env.DEBUG) {
+    console.log(`📁 Repositório: ${GITHUB_OWNER}/${GITHUB_REPO}`);
+    console.log(`🔐 PAT configurado: ${GITHUB_PAT ? 'Sim' : 'Não'}`);
+  }
 });
 
 module.exports = app;
