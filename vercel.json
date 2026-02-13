@@ -1,14 +1,4 @@
 {
   "version": 2,
-  "buildCommand": "npm install",
-  "env": [
-    "GITHUB_CLIENT_ID",
-    "GITHUB_CLIENT_SECRET", 
-    "GITHUB_PAT",
-    "GITHUB_OWNER",
-    "GITHUB_REPO",
-    "CALLBACK_URL",
-    "SESSION_SECRET",
-    "NODE_ENV"
-  ]
+  "buildCommand": "npm install"
 }
