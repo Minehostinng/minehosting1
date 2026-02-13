@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="MineHosting - Os melhores servidores de Minecraft com performance máxima, proteção DDoS e suporte 24/7. Comece sua aventura agora!">
+    <meta name="keywords" content="minecraft, servidor, hosting, hospedagem, minecraft server, java, bedrock">
+    <title>MineHosting - Hospedagem Premium de Servidores Minecraft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-cube"></i>
+                <span>Mine<span class="highlight">Hosting</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#features">Recursos</a></li>
+                <li><a href="#pricing">Planos</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="registro.html" class="btn btn-primary">Começar Agora</a>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-rocket"></i>
+                    <span>A Hospedagem #1 do Brasil</span>
+                </div>
+                <h1 class="hero-title">
+                    Seu Servidor <span class="gradient-text">Minecraft</span><br>
+                    No Próximo Nível
+                </h1>
+                <p class="hero-subtitle">
+                    Performance extrema, proteção DDoS avançada e suporte 24/7.
+                    Hospede seu servidor com a melhor infraestrutura do mercado.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#pricing" class="btn btn-primary btn-large">
+                        <i class="fas fa-server"></i>
+                        Ver Planos
+                    </a>
+                    <a href="#features" class="btn btn-glass btn-large">
+                        <i class="fas fa-play"></i>
+                        Saiba Mais
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number" data-count="15000">0</span>+
+                        <span class="stat-label">Servidores Ativos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="99.9">0</span>%
+                        <span class="stat-label">Uptime Garantido</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" data-count="50000">0</span>+
+                        <span class="stat-label">Clientes Satisfeitos</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card card-1">
+                    <i class="fas fa-shield-halved"></i>
+                    <span>Proteção DDoS</span>
+                </div>
+                <div class="floating-card card-2">
+                    <i class="fas fa-bolt"></i>
+                    <span>Alta Performance</span>
+                </div>
+                <div class="floating-card card-3">
+                    <i class="fas fa-headset"></i>
+                    <span>Suporte 24/7</span>
+                </div>
+                <div class="minecraft-block"></div>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+                    fill="url(#gradient)" />
+                <defs>
+                    <linearGradient id="gradient" x1="720" y1="0" x2="720" y2="120">
+                        <stop offset="0%" stop-color="#0a0a0f" />
+                        <stop offset="100%" stop-color="#0d0d14" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Recursos</span>
+                <h2 class="section-title">Por que escolher a <span class="gradient-text">MineHosting</span>?</h2>
+                <p class="section-subtitle">Oferecemos a melhor estrutura para seu servidor de Minecraft</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h3>Processadores AMD Ryzen 9</h3>
+                    <p>Hardware de última geração para garantir máxima performance e estabilidade.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-memory"></i>
+                    </div>
+                    <h3>Memória DDR5 ECC</h3>
+                    <p>RAM de alta velocidade para suportar muitos jogadores simultaneamente.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hard-drive"></i>
+                    </div>
+                    <h3>NVMe SSD Ultra Rápido</h3>
+                    <p>Armazenamento SSD NVMe para carregamento instantâneo do mundo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-halved"></i>
+                    </div>
+                    <h3>Anti-DDoS Premium</h3>
+                    <p>Proteção avançada contra ataques para manter seu servidor sempre online.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Baixa Latência</h3>
+                    <p>Servidores no Brasil para menor ping e melhor experiência de jogo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Ativação Instantânea</h3>
+                    <p>Seu servidor pronto em segundos após a confirmação do pagamento.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3>Instalador de Modpacks</h3>
+                    <p>Instale modpacks populares com apenas um clique.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Backups Automáticos</h3>
+                    <p>Backups diários automáticos para proteger seu mundo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Server Types Section -->
+    <section class="server-types">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Compatibilidade</span>
+                <h2 class="section-title">Suporte a Todas as <span class="gradient-text">Versões</span></h2>
+                <p class="section-subtitle">Java Edition, Bedrock e todas as suas versões favoritas</p>
+            </div>
+            <div class="types-grid">
+                <div class="type-card">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java">
+                    <h4>Java Edition</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-cube"></i>
+                    <h4>Bedrock</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-paper-plane"></i>
+                    <h4>Paper</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-water"></i>
+                    <h4>Spigot</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-network-wired"></i>
+                    <h4>BungeeCord</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-bolt-lightning"></i>
+                    <h4>Velocity</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-fire"></i>
+                    <h4>Forge</h4>
+                </div>
+                <div class="type-card">
+                    <i class="fas fa-feather"></i>
+                    <h4>Fabric</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Planos</span>
+                <h2 class="section-title">Escolha o Plano <span class="gradient-text">Perfeito</span></h2>
+                <p class="section-subtitle">Planos flexíveis para todos os tamanhos de servidores</p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Starter Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <span class="plan-name">Starter</span>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span class="amount">15</span>
+                            <span class="period">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 2 Cores CPU</li>
+                        <li><i class="fas fa-check"></i> 4GB RAM DDR5</li>
+                        <li><i class="fas fa-check"></i> 10GB SSD NVMe</li>
+                        <li><i class="fas fa-check"></i> 20 Slots de Jogadores</li>
+                        <li><i class="fas fa-check"></i> Proteção DDoS</li>
+                        <li><i class="fas fa-check"></i> Painel de Controle</li>
+                        <li><i class="fas fa-check"></i> Suporte por Ticket</li>
+                    </ul>
+                    <a href="https://pay.kirvano.com/48df0102-dbf4-40a6-a80d-b001d1b47998"
+                        class="btn btn-outline btn-block btn-select-plan">Selecionar Plano</a>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Mais Popular</div>
+                    <div class="pricing-header">
+                        <span class="plan-name">Pro</span>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span class="amount">25</span>
+                            <span class="period">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 2 Cores CPU</li>
+                        <li><i class="fas fa-check"></i> 8GB RAM DDR5</li>
+                        <li><i class="fas fa-check"></i> 20GB SSD NVMe</li>
+                        <li><i class="fas fa-check"></i> 30 Slots de Jogadores</li>
+                        <li><i class="fas fa-check"></i> Suporte a Mods/Plugins</li>
+                        <li><i class="fas fa-check"></i> Proteção DDoS Avançada</li>
+                        <li><i class="fas fa-check"></i> Painel de Controle</li>
+                        <li><i class="fas fa-check"></i> Suporte Prioritário</li>
+                        <li><i class="fas fa-check"></i> Backups Diários</li>
+                        <li><i class="fas fa-check"></i> Subdomínio Grátis</li>
+                    </ul>
+                    <a href="https://pay.kirvano.com/e84565cf-8940-431d-a12b-ebceac990903"
+                        class="btn btn-primary btn-block btn-select-plan">Selecionar Plano</a>
+                </div>
+
+                <!-- Ultimate Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <span class="plan-name">Ultimate</span>
+                        <div class="plan-price">
+                            <span class="currency">R$</span>
+                            <span class="amount">35</span>
+                            <span class="period">/mês</span>
+                        </div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 4 Cores CPU</li>
+                        <li><i class="fas fa-check"></i> 16GB RAM DDR5</li>
+                        <li><i class="fas fa-check"></i> 30GB SSD NVMe</li>
+                        <li><i class="fas fa-check"></i> 50 Slots de Jogadores</li>
+                        <li><i class="fas fa-check"></i> Suporte a Mods/Plugins</li>
+                        <li><i class="fas fa-check"></i> Proteção DDoS Premium</li>
+                        <li><i class="fas fa-check"></i> Painel de Controle</li>
+                        <li><i class="fas fa-check"></i> Suporte VIP 24/7</li>
+                        <li><i class="fas fa-check"></i> Backups em Tempo Real</li>
+                        <li><i class="fas fa-check"></i> Domínio Personalizado</li>
+                        <li><i class="fas fa-check"></i> IP Dedicado</li>
+                    </ul>
+                    <a href="https://pay.kirvano.com/a5b32106-536b-4243-917c-3651fe406cc9"
+                        class="btn btn-outline btn-block btn-select-plan">Selecionar Plano</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Depoimentos</span>
+                <h2 class="section-title">O que nossos <span class="gradient-text">Clientes</span> dizem</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"Melhor hospedagem que já usei! O servidor nunca lagou e o suporte é incrível. Recomendo
+                            muito!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Pedro Silva</h4>
+                            <span>Dono do NetworkPvP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"O painel é super fácil de usar. Consegui configurar meu servidor com modpacks sem nenhum
+                            problema!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Maria Santos</h4>
+                            <span>Dona do PixelCraft</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>"Migrei de outra host e a diferença é absurda. Performance muito superior e preço justo!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4>Lucas Oliveira</h4>
+                            <span>Dono do SurvivalBR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">FAQ</span>
+                <h2 class="section-title">Perguntas <span class="gradient-text">Frequentes</span></h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Como funciona a ativação do servidor?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Após a confirmação do pagamento, seu servidor é ativado automaticamente em menos de 60
+                            segundos. Você receberá um email com todos os dados de acesso ao painel.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Posso instalar mods e plugins?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Você tem total controle sobre seu servidor. Pode instalar qualquer mod, plugin ou
+                            modpack através do nosso painel intuitivo ou via SFTP.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Vocês oferecem proteção DDoS?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Todos os nossos planos incluem proteção DDoS. Nossos planos mais avançados contam com
+                            proteção ainda mais robusta contra ataques volumétricos.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Posso fazer upgrade do meu plano?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Claro! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. O valor será
+                            calculado proporcionalmente.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Quais formas de pagamento vocês aceitam?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Aceitamos PIX, cartão de crédito (até 12x), boleto bancário e diversas formas de pagamento
+                            online.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Vocês oferecem suporte técnico?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sim! Oferecemos suporte técnico via ticket, Discord e para clientes VIP, suporte prioritário
+                            24/7 com tempo de resposta ultra rápido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto para começar sua aventura?</h2>
+                <p>Junte-se a mais de 50.000 clientes satisfeitos e crie seu servidor agora mesmo!</p>
+                <div class="cta-buttons">
+                    <a href="registro.html" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i>
+                        Criar Meu Servidor
+                    </a>
+                    <a href="#contact" class="btn btn-glass btn-large">
+                        <i class="fas fa-comments"></i>
+                        Falar com Suporte
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Contato</span>
+                <h2 class="section-title">Entre em <span class="gradient-text">Contato</span></h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>contato@minehosting.com.br</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Discord</h4>
+                            <p>discord.gg/minehosting</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>WhatsApp</h4>
+                            <p>+55 (11) 9999-9999</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Seu Nome" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Seu Email" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="subject">
+                            <option value="">Selecione o Assunto</option>
+                            <option value="vendas">Vendas</option>
+                            <option value="suporte">Suporte Técnico</option>
+                            <option value="financeiro">Financeiro</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" placeholder="Sua Mensagem" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Mensagem
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <i class="fas fa-cube"></i>
+                        <span>Mine<span class="highlight">Hosting</span></span>
+                    </a>
+                    <p>A melhor hospedagem de servidores Minecraft do Brasil. Performance, segurança e suporte de
+                        qualidade.</p>
+                    <div class="social-links">
+                        <a href="https://discord.gg/minehosting" target="_blank"><i class="fab fa-discord"></i></a>
+                        <a href="https://twitter.com/minehosting" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com/minehosting" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com/@minehosting" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#features">Recursos</a></li>
+                        <li><a href="#pricing">Planos</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Suporte</h4>
+                    <ul>
+                        <li><a href="ajuda.html">Central de Ajuda</a></li>
+                        <li><a href="status.html">Status dos Serviços</a></li>
+                        <li><a href="base-conhecimento.html">Base de Conhecimento</a></li>
+                        <li><a href="login.html">Abrir Ticket</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="sla.html">SLA</a></li>
+                        <li><a href="reembolso.html">Política de Reembolso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MineHosting. Todos os direitos reservados.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-pix"></i>
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fas fa-barcode"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Verificação de autenticação para seleção de planos
+        document.addEventListener('DOMContentLoaded', () => {
+            const planButtons = document.querySelectorAll('.btn-select-plan');
+            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+            // Atualizar Navbar se estiver logado
+            const navButtons = document.querySelector('.nav-buttons');
+            if (isAuthenticated && navButtons) {
+                navButtons.innerHTML = `
+                    <a href="painel.html" class="btn btn-primary">Área do Cliente</a>
+                `;
+            }
+
+            planButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    if (!isAuthenticated) {
+                        e.preventDefault();
+                        const targetUrl = button.getAttribute('href');
+                        window.location.href = `login.html?returnUrl=${encodeURIComponent(targetUrl)}`;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MineHosting - Status dos Serviços em Tempo Real">
+    <title>Status dos Serviços - MineHosting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .status-page {
+            min-height: 100vh;
+            padding-top: 120px;
+            padding-bottom: 80px;
+        }
+
+        .status-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .status-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .status-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .overall-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            padding: 20px 40px;
+            border-radius: var(--radius-xl);
+            margin-bottom: 20px;
+        }
+
+        .overall-status.operational {
+            background: rgba(0, 212, 170, 0.1);
+            border-color: rgba(0, 212, 170, 0.3);
+        }
+
+        .overall-status i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .overall-status span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .status-list {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-item-info i {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            width: 24px;
+            text-align: center;
+        }
+
+        .status-item-info span {
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-xl);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.operational {
+            background: rgba(0, 212, 170, 0.15);
+            color: var(--primary);
+        }
+
+        .status-badge.operational::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .uptime-section {
+            margin-top: 40px;
+        }
+
+        .uptime-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+
+        .uptime-chart {
+            display: flex;
+            gap: 3px;
+            height: 40px;
+        }
+
+        .uptime-bar {
+            flex: 1;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: var(--transition-fast);
+        }
+
+        .uptime-bar:hover {
+            transform: scaleY(1.2);
+        }
+
+        .uptime-info {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-cube"></i>
+                <span>Mine<span class="highlight">Hosting</span></span>
+            </a>
+            <div class="nav-buttons">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="registro.html" class="btn btn-primary">Começar Agora</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="status-page">
+        <div class="status-container">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao início
+            </a>
+
+            <div class="status-header">
+                <h1>Status dos <span class="gradient-text">Serviços</span></h1>
+                <div class="overall-status operational">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Todos os sistemas operacionais</span>
+                </div>
+                <p style="color: var(--text-muted);">Última atualização: há 2 minutos</p>
+            </div>
+
+            <div class="status-list">
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-server"></i>
+                        <span>Servidores de Jogo - Brasil</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-desktop"></i>
+                        <span>Painel de Controle</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-globe"></i>
+                        <span>API</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-database"></i>
+                        <span>Banco de Dados</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Proteção DDoS</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-item-info">
+                        <i class="fas fa-cloud"></i>
+                        <span>Backups Automáticos</span>
+                    </div>
+                    <div class="status-badge operational">Operacional</div>
+                </div>
+            </div>
+
+            <div class="uptime-section">
+                <h2><i class="fas fa-chart-line"></i> Uptime dos Últimos 90 Dias</h2>
+                <div class="uptime-chart">
+                    <!-- 90 bars for 90 days -->
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                    <div class="uptime-bar"></div>
+                </div>
+                <div class="uptime-info">
+                    <span>90 dias atrás</span>
+                    <span><strong>99.99%</strong> uptime</span>
+                    <span>Hoje</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
