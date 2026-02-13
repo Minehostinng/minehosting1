@@ -1,4 +1,4 @@
-// api/server.js - serverless function para Vercel
+// api/server.js - Handler para Vercel Serverless Functions
 const express = require('express');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -12,16 +12,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configurar Sessão
+// Configurar Sessão com storage em memória (necessário para Vercel)
 app.use(session({
   secret: process.env.SESSION_SECRET || 'seu_secret_aleatorio_aqui',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     sameSite: 'lax',
-    maxAge: 1000 * 60 * 60 * 24 // 24 horas
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
@@ -39,6 +39,13 @@ const GITHUB_API_URL = 'https://api.github.com';
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 const CALLBACK_URL = process.env.CALLBACK_URL || 'https://minehosting-seven.vercel.app/auth/github/callback';
+
+console.log('✓ Configurações carregadas:', {
+  GITHUB_CLIENT_ID: GITHUB_CLIENT_ID ? '✓' : '✗',
+  GITHUB_CLIENT_SECRET: GITHUB_CLIENT_SECRET ? '✓' : '✗',
+  CALLBACK_URL,
+  NODE_ENV: process.env.NODE_ENV
+});
 
 // ============ CONFIGURAR PASSPORT ============
 
@@ -76,23 +83,34 @@ passport.use(new GitHubStrategy({
       profile: profile
     };
 
+    console.log(`✓ Usuário autenticado: ${userData.login}`);
     return done(null, userData);
   } catch (error) {
-    console.error('Erro ao processar usuário GitHub:', error);
+    console.error('✗ Erro ao processar usuário GitHub:', error.message);
     return done(error);
   }
 }));
 
 // ============ ROTAS DE AUTENTICAÇÃO ============
 
+// Health Check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'Servidor rodando',
+    timestamp: new Date().toISOString(),
+    nodeEnv: process.env.NODE_ENV
+  });
+});
+
+// Iniciar login GitHub
 app.get('/auth/github', passport.authenticate('github', { scope: ['user:email', 'repo'] }));
 
+// Callback do GitHub
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login.html?error=auth_failed' }),
   async (req, res) => {
     try {
       const user = req.user;
-
       console.log(`[Flow] Criando repositório para ${user.login}`);
       let repoReady = false;
 
@@ -119,12 +137,12 @@ app.get('/auth/github/callback',
           console.log(`[!] O repositório 'minehosting' já existe.`);
           repoReady = true;
         } else {
-          console.error('[✗ Erro Repo]', repoError.response?.data || repoError.message);
+          console.error('[✗ Erro Repo]', repoError.response?.data?.message || repoError.message);
         }
       }
 
       if (repoReady) {
-        console.log(`[Codespace Creation] Tentando criar Codespace para ${user.login}/minehosting`);
+        console.log(`[Codespace] Tentando criar Codespace para ${user.login}/minehosting`);
         try {
           await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -142,9 +160,9 @@ app.get('/auth/github/callback',
               },
             }
           );
-          console.log(`[✓ Sucesso] Codespace criado para ${user.login}`);
+          console.log(`[✓] Codespace criado para ${user.login}`);
         } catch (csError) {
-          console.error('[✗ Erro Codespace]', csError.response?.data || csError.message);
+          console.error('[!] Codespace:', csError.response?.data?.message || csError.message);
         }
       }
 
@@ -164,6 +182,7 @@ app.get('/auth/github/callback',
   }
 );
 
+// Dados do usuário autenticado
 app.get('/auth/user', (req, res) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ error: 'Não autenticado' });
@@ -180,6 +199,7 @@ app.get('/auth/user', (req, res) => {
   });
 });
 
+// Logout
 app.get('/auth/logout', (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -189,15 +209,11 @@ app.get('/auth/logout', (req, res) => {
   });
 });
 
-// Health Check
-app.get('/health', (req, res) => {
-  res.json({ status: 'Servidor rodando', timestamp: new Date().toISOString() });
-});
-
-// 404 para rotas não encontradas
+// 404
 app.use((req, res) => {
+  console.log(`404: ${req.method} ${req.path}`);
   res.status(404).json({ error: 'Rota não encontrada', path: req.path });
 });
 
-// Exportar para Vercel serverless
+// Exportar como handler serverless
 module.exports = app;
