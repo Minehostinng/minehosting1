@@ -395,7 +395,34 @@
                 return;
             }
 
-            // Salvar dados atualizados no localStorage
+            // Decodificar dados que vêm da URL
+            try {
+                name = decodeURIComponent(name || username);
+                email = decodeURIComponent(email || '');
+                avatar = decodeURIComponent(avatar || '');
+            } catch (e) {
+                console.log('Dados já decodificados');
+            }
+
+            // Se dados vêm da URL (login fresh do GitHub), salvar no localStorage
+            if (params.get('username')) {
+                console.log('✅ Novo login detectado, salvando dados...');
+                const userData = {
+                    username,
+                    name,
+                    email,
+                    avatar,
+                    plan: plan || 'pro',
+                    price: plan === 'starter' ? '15' : plan === 'ultimate' ? '35' : '25',
+                    selectedDate: new Date().toISOString(),
+                    startDate: new Date().toISOString(),
+                    nextBillingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'active'
+                };
+                window.saveUserData?.(userData);
+            }
+
+            // Dados finais a usar
             const userData = {
                 username,
                 name: name || username,
@@ -407,8 +434,6 @@
                 nextBillingDate: savedData.nextBillingDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
                 status: 'active'
             };
-
-            window.saveUserData?.(userData);
 
             // Atualizar UI com dados do usuário
             document.getElementById('userName').textContent = userData.name;

@@ -1211,21 +1211,49 @@
                 }
             }
 
-            // Se usuário logado, atualizar navbar
+            // Se usuário logado, salvar no localStorage IMEDIATAMENTE
             if (username) {
+                const userData = {
+                    username,
+                    name: decodeURIComponent(name || username),
+                    email: decodeURIComponent(email || ''),
+                    avatar: decodeURIComponent(avatar || ''),
+                    plan: 'pro', // Padrão
+                    price: '25',
+                    selectedDate: new Date().toISOString(),
+                    startDate: new Date().toISOString(),
+                    nextBillingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                    status: 'active'
+                };
+                
+                // SALVAR IMEDIATAMENTE
+                if (window.saveUserData) {
+                    window.saveUserData(userData);
+                } else {
+                    // Fallback se a função não estiver disponível
+                    try {
+                        localStorage.setItem('userAccount', JSON.stringify(userData));
+                    } catch (e) {
+                        console.error('Erro ao salvar:', e);
+                    }
+                }
+                
+                console.log('✅ Dados salvos ao entrar:', userData);
+
+                // Atualizar navbar
                 const navButtons = document.getElementById('navButtons');
                 navButtons.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="${avatar || 'https://via.placeholder.com/40'}" alt="Avatar" 
+                        <img src="${userData.avatar || 'https://via.placeholder.com/40'}" alt="Avatar" 
                              style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
-                        <span style="color: var(--text-primary); font-weight: 500;">${name || username}</span>
-                        <a href="cliente.html?username=${username}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&avatar=${encodeURIComponent(avatar)}" 
+                        <span style="color: var(--text-primary); font-weight: 500;">${userData.name}</span>
+                        <a href="cliente.html?username=${userData.username}&name=${encodeURIComponent(userData.name)}&email=${encodeURIComponent(userData.email)}&avatar=${encodeURIComponent(userData.avatar)}" 
                            class="btn btn-outline" style="font-size: 0.9rem;">Área do Cliente</a>
                     </div>
                 `;
                 
                 // Atualizar título
-                document.title = `Selecionar Plano - ${name} - MineHosting`;
+                document.title = `Selecionar Plano - ${userData.name} - MineHosting`;
             }
         }
 
