@@ -888,10 +888,261 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* User Profile Dropdown */
+        .user-profile-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .user-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-profile-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar-small img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-email {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: rgba(20, 20, 30, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 280px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar-large {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .profile-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name-email {
+            flex: 1;
+        }
+
+        .profile-user {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            margin-bottom: 3px;
+        }
+
+        .profile-email {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            word-break: break-all;
+        }
+
+        .profile-info-row {
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-info-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 12px 0;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .profile-btn-logout {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+
+        .profile-btn-logout:hover {
+            background: rgba(231, 76, 60, 0.3);
+            border-color: rgba(231, 76, 60, 0.6);
+        }
+
+        .profile-btn-account {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            border: 1px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .profile-btn-account:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .user-profile-container {
+                top: 10px;
+                right: 10px;
+            }
+
+            .user-profile-btn {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .user-info-text {
+                display: none;
+            }
+
+            .profile-dropdown {
+                min-width: 250px;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- User Profile -->
+    <div class="user-profile-container" id="userProfileContainer" style="display: none;">
+        <button class="user-profile-btn" id="userProfileBtn">
+            <div class="user-avatar-small">
+                <img id="profileAvatarSmall" src="" alt="Avatar">
+            </div>
+            <div class="user-info-text">
+                <div class="user-name" id="profileUserName">Usuário</div>
+                <div class="user-email" id="profileUserEmail">email@example.com</div>
+            </div>
+        </button>
+
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+                <div class="profile-avatar-large">
+                    <img id="profileAvatarLarge" src="" alt="Avatar">
+                </div>
+                <div class="profile-name-email">
+                    <div class="profile-user" id="profileUserNameLarge">Usuário</div>
+                    <div class="profile-email" id="profileUserEmailLarge">email@example.com</div>
+                </div>
+            </div>
+
+            <div style="padding: 8px 0;">
+                <div class="profile-info-row">
+                    <span class="profile-info-label">Usuário GitHub</span>
+                    <span id="profileUsername">-</span>
+                </div>
+                <div class="profile-info-row">
+                    <span class="profile-info-label">Plano Ativo</span>
+                    <span id="profilePlan" style="color: #667eea; font-weight: 600;">-</span>
+                </div>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-actions">
+                <button class="profile-btn profile-btn-account" onclick="goToProfile()">
+                    <i class="fas fa-user"></i> Perfil
+                </button>
+                <button class="profile-btn profile-btn-logout" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+    </div>
     <script>
         // Check authentication
         if (!localStorage.getItem('isAuthenticated')) {
@@ -1271,6 +1522,85 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadUserContext);
+
+        // ===== USER PROFILE DROPDOWN =====
+        function showUserProfile() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('username');
+            const name = params.get('name');
+            const email = params.get('email');
+            const avatar = params.get('avatar');
+
+            if (!username) {
+                const savedData = window.getUserData?.();
+                if (!savedData?.username) return;
+                username = savedData.username;
+                name = savedData.name;
+                email = savedData.email;
+                avatar = savedData.avatar;
+            }
+
+            if (username) {
+                try {
+                    const decodedName = decodeURIComponent(name || username);
+                    const decodedEmail = decodeURIComponent(email || '');
+                    const decodedAvatar = decodeURIComponent(avatar || 'https://via.placeholder.com/40');
+
+                    // Mostrar container
+                    document.getElementById('userProfileContainer').style.display = 'block';
+
+                    // Preencher dados da button
+                    document.getElementById('profileAvatarSmall').src = decodedAvatar;
+                    document.getElementById('profileUserName').textContent = decodedName;
+                    document.getElementById('profileUserEmail').textContent = decodedEmail;
+
+                    // Preencher dados do dropdown
+                    document.getElementById('profileAvatarLarge').src = decodedAvatar;
+                    document.getElementById('profileUserNameLarge').textContent = decodedName;
+                    document.getElementById('profileUserEmailLarge').textContent = decodedEmail;
+                    document.getElementById('profileUsername').textContent = '@' + username;
+
+                    // Plano
+                    const plan = params.get('plan') || window.getUserData?.().plan || 'Pro';
+                    const planNames = { starter: 'Starter', pro: 'Pro', ultimate: 'Ultimate' };
+                    document.getElementById('profilePlan').textContent = planNames[plan.toLowerCase()] || 'Pro';
+
+                } catch (e) {
+                    console.error('Erro ao mostrar perfil:', e);
+                }
+            }
+        }
+
+        // Toggle dropdown
+        document.getElementById('userProfileBtn')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('active');
+        });
+
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('userProfileContainer');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('profileDropdown').classList.remove('active');
+            }
+        });
+
+        // Funções dos botões
+        function goToProfile() {
+            window.location.href = '/cliente.html';
+        }
+
+        function handleLogout() {
+            if (confirm('Tem certeza que deseja fazer logout?')) {
+                localStorage.removeItem('userAccount');
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Mostrar perfil ao carregar
+        document.addEventListener('DOMContentLoaded', showUserProfile);
+        
         // Plan Selection
         const planOptions = document.querySelectorAll('.plan-option');
         const billingOptions = document.querySelectorAll('.billing-option');

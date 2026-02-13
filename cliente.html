@@ -55,6 +55,203 @@
             flex: 1;
             padding: 40px;
             overflow-y: auto;
+            position: relative;
+        }
+
+        /* User Profile Dropdown - Cliente */
+        .user-profile-container-client {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .user-profile-btn-client {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #333;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-profile-btn-client:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .user-avatar-small-client {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-avatar-small-client img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info-text-client {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-name-client {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .user-email-client {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .profile-dropdown-client {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 280px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .profile-dropdown-client.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .profile-header-client {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-avatar-large-client {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #667eea;
+        }
+
+        .profile-avatar-large-client img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name-email-client {
+            flex: 1;
+        }
+
+        .profile-user-client {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 3px;
+        }
+
+        .profile-email-client {
+            font-size: 0.8rem;
+            color: #999;
+            word-break: break-all;
+        }
+
+        .profile-info-row-client {
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-info-label-client {
+            color: #999;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-divider-client {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 12px 0;
+        }
+
+        .profile-actions-client {
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-btn-client {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: white;
+        }
+
+        .profile-btn-logout-client {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .profile-btn-logout-client:hover {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: rgba(231, 76, 60, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .user-profile-container-client {
+                top: 10px;
+                right: 10px;
+            }
+
+            .user-profile-btn-client {
+                padding: 6px 12px;
+                font-size: 0.85rem;
+            }
+
+            .user-info-text-client {
+                display: none;
+            }
+
+            .profile-dropdown-client {
+                min-width: 250px;
+            }
         }
 
         .user-header {
@@ -289,6 +486,49 @@
     </style>
 </head>
 <body>
+    <!-- User Profile Dropdown -->
+    <div class="user-profile-container-client" id="userProfileContainerClient">
+        <button class="user-profile-btn-client" id="userProfileBtnClient">
+            <div class="user-avatar-small-client">
+                <img id="profileAvatarSmallClient" src="" alt="Avatar">
+            </div>
+            <div class="user-info-text-client">
+                <div class="user-name-client" id="profileUserNameClient">Usuário</div>
+                <div class="user-email-client" id="profileUserEmailClient">email@example.com</div>
+            </div>
+        </button>
+
+        <div class="profile-dropdown-client" id="profileDropdownClient">
+            <div class="profile-header-client">
+                <div class="profile-avatar-large-client">
+                    <img id="profileAvatarLargeClient" src="" alt="Avatar">
+                </div>
+                <div class="profile-name-email-client">
+                    <div class="profile-user-client" id="profileUserNameLargeClient">Usuário</div>
+                    <div class="profile-email-client" id="profileUserEmailLargeClient">email@example.com</div>
+                </div>
+            </div>
+
+            <div style="padding: 8px 0;">
+                <div class="profile-info-row-client">
+                    <span class="profile-info-label-client">Usuário GitHub</span>
+                    <span id="profileUsernameClient">-</span>
+                </div>
+                <div class="profile-info-row-client">
+                    <span class="profile-info-label-client">Plano Ativo</span>
+                    <span id="profilePlanClient" style="color: #667eea; font-weight: 600;">-</span>
+                </div>
+            </div>
+
+            <div class="profile-divider-client"></div>
+
+            <div class="profile-actions-client">
+                <button class="profile-btn-client profile-btn-logout-client" onclick="handleLogoutClient()">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+    </div>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -588,6 +828,64 @@
 
         // Carregar dados quando a página carrega
         document.addEventListener('DOMContentLoaded', loadUserData);
+
+        // ===== USER PROFILE DROPDOWN - CLIENTE =====
+        function showUserProfileClient() {
+            const savedData = window.getUserData?.() || {};
+            const username = savedData.username;
+            const name = savedData.name;
+            const email = savedData.email;
+            const avatar = savedData.avatar;
+            const plan = savedData.plan;
+
+            if (username) {
+                try {
+                    // Preencher dados da button
+                    document.getElementById('profileAvatarSmallClient').src = avatar || 'https://via.placeholder.com/40';
+                    document.getElementById('profileUserNameClient').textContent = name || username;
+                    document.getElementById('profileUserEmailClient').textContent = email || '';
+
+                    // Preencher dados do dropdown
+                    document.getElementById('profileAvatarLargeClient').src = avatar || 'https://via.placeholder.com/40';
+                    document.getElementById('profileUserNameLargeClient').textContent = name || username;
+                    document.getElementById('profileUserEmailLargeClient').textContent = email || '';
+                    document.getElementById('profileUsernameClient').textContent = '@' + username;
+
+                    // Plano
+                    const planNames = { starter: 'Starter', pro: 'Pro', ultimate: 'Ultimate' };
+                    document.getElementById('profilePlanClient').textContent = planNames[plan?.toLowerCase()] || 'Pro';
+
+                } catch (e) {
+                    console.error('Erro ao mostrar perfil cliente:', e);
+                }
+            }
+        }
+
+        // Toggle dropdown
+        document.getElementById('userProfileBtnClient')?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdown = document.getElementById('profileDropdownClient');
+            dropdown.classList.toggle('active');
+        });
+
+        // Fechar dropdown ao clicar fora
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('userProfileContainerClient');
+            if (container && !container.contains(e.target)) {
+                document.getElementById('profileDropdownClient').classList.remove('active');
+            }
+        });
+
+        // Função de logout
+        function handleLogoutClient() {
+            if (confirm('Tem certeza que deseja fazer logout?')) {
+                localStorage.removeItem('userAccount');
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Mostrar perfil ao carregar
+        document.addEventListener('DOMContentLoaded', showUserProfileClient);
     </script>
 </body>
 </html>
