@@ -1,5 +1,9 @@
-// api/[...].js - Capture all routes and delegate to Express app
+// api/[...].js - Route handler para todas as requisições
+const http = require('http');
 const serverApp = require('./server');
 
-// Vercel serverless function handler
+// Criar um servidor que o Vercel pode executar
+const server = http.createServer(serverApp);
+
+// Handler para Vercel - retorna a aplicação Express
 module.exports = serverApp;

@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "buildCommand": "npm install",
   "env": [
     "GITHUB_CLIENT_ID",
@@ -11,25 +10,5 @@
     "CALLBACK_URL",
     "SESSION_SECRET",
     "NODE_ENV"
-  ],
-  "functions": {
-    "api/server.js": {
-      "runtime": "nodejs18.x",
-      "maxDuration": 30
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/server.js"
-    },
-    {
-      "source": "/auth/(.*)",
-      "destination": "/api/server.js"
-    },
-    {
-      "source": "/health",
-      "destination": "/api/server.js"
-    }
   ]
 }
