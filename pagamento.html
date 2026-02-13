@@ -1195,9 +1195,21 @@
         // Atualizar navbar e dados do usuário
         function loadUserContext() {
             const params = new URLSearchParams(window.location.search);
-            const username = params.get('username');
-            const name = params.get('name');
-            const avatar = params.get('avatar');
+            let username = params.get('username');
+            let name = params.get('name');
+            let avatar = params.get('avatar');
+            let email = params.get('email');
+
+            // Se não tiver nos parâmetros, tentar do localStorage
+            if (!username) {
+                const savedData = window.getUserData?.();
+                if (savedData?.username) {
+                    username = savedData.username;
+                    name = name || savedData.name;
+                    email = email || savedData.email;
+                    avatar = avatar || savedData.avatar;
+                }
+            }
 
             // Se usuário logado, atualizar navbar
             if (username) {
@@ -1207,7 +1219,7 @@
                         <img src="${avatar || 'https://via.placeholder.com/40'}" alt="Avatar" 
                              style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                         <span style="color: var(--text-primary); font-weight: 500;">${name || username}</span>
-                        <a href="cliente.html?username=${username}&name=${name}&email=${params.get('email')}&avatar=${avatar}" 
+                        <a href="cliente.html?username=${username}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&avatar=${encodeURIComponent(avatar)}" 
                            class="btn btn-outline" style="font-size: 0.9rem;">Área do Cliente</a>
                     </div>
                 `;
@@ -1215,6 +1227,19 @@
                 // Atualizar título
                 document.title = `Selecionar Plano - ${name} - MineHosting`;
             }
+        }
+
+        // Função para recuperar dados salvos
+        function getStoredUserData() {
+            try {
+                const stored = localStorage.getItem('userAccount');
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.error('Erro ao recuperar dados:', e);
+            }
+            return null;
         }
 
         document.addEventListener('DOMContentLoaded', loadUserContext);

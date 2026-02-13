@@ -501,6 +501,43 @@
     <script src="js/main.js"></script>
     <script>
         /**
+         * Recupera dados do usuário do localStorage
+         */
+        function getUserData() {
+            try {
+                const stored = localStorage.getItem('userAccount');
+                return stored ? JSON.parse(stored) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        /**
+         * Verifica se há usuário logado e oferece opção de voltar
+         */
+        function checkLoggedInUser() {
+            const userData = getUserData();
+            if (userData?.username) {
+                // Criar botão de retorno
+                const loginCard = document.querySelector('.login-card');
+                const returnBtn = document.createElement('a');
+                returnBtn.href = `/cliente.html?username=${userData.username}&name=${encodeURIComponent(userData.name)}&email=${encodeURIComponent(userData.email)}&avatar=${encodeURIComponent(userData.avatar)}`;
+                returnBtn.className = 'btn btn-primary';
+                returnBtn.style.cssText = 'display: block; width: 100%; text-align: center; padding: 12px; margin-bottom: 15px; text-decoration: none; border-radius: 8px;';
+                returnBtn.innerHTML = `<i class="fas fa-arrow-right"></i> Voltar para ${userData.name || userData.username}`;
+                
+                // Inserir no início da card
+                loginCard.insertBefore(returnBtn, loginCard.firstChild);
+
+                // Adicionar separador
+                const sep = document.createElement('div');
+                sep.style.cssText = 'display: flex; align-items: center; gap: 10px; margin: 20px 0; opacity: 0.5;';
+                sep.innerHTML = '<div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div><span>ou</span><div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>';
+                loginCard.insertBefore(sep, loginCard.querySelector('.login-divider'));
+            }
+        }
+
+        /**
          * Mostra mensagem de erro no formulário
          */
         function showError(message) {
@@ -522,6 +559,9 @@
                 errorDiv.style.display = 'none';
             }
         }
+
+        // Verificar se há usuário logado quando a página carrega
+        document.addEventListener('DOMContentLoaded', checkLoggedInUser);
 
         // Email/Password Login
         document.getElementById('loginForm').addEventListener('submit', function (e) {

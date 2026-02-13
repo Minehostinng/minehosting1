@@ -369,41 +369,82 @@
     </div>
 
     <script>
-        // Carregar dados do usuário dos parâmetros da URL
+        // Carregar dados do usuário dos parâmetros da URL E localStorage
         async function loadUserData() {
             const params = new URLSearchParams(window.location.search);
-            const username = params.get('username');
-            const name = params.get('name');
-            const email = params.get('email');
-            const avatar = params.get('avatar');
+            let username = params.get('username');
+            let name = params.get('name');
+            let email = params.get('email');
+            let avatar = params.get('avatar');
+            let plan = params.get('plan');
+
+            // Se não tiver nos parâmetros, tentar do localStorage
+            const savedData = window.getUserData?.() || {};
+            if (!username && savedData.username) {
+                username = savedData.username;
+                name = name || savedData.name;
+                email = email || savedData.email;
+                avatar = avatar || savedData.avatar;
+                plan = plan || savedData.plan;
+            }
+
+            // Se ainda não tiver dados, redirecionar para login
+            if (!username) {
+                alert('❌ Por favor, faça login primeiro!');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Salvar dados atualizados no localStorage
+            const userData = {
+                username,
+                name: name || username,
+                email: email || '',
+                avatar: avatar || '',
+                plan: plan || 'pro',
+                selectedDate: savedData.selectedDate || new Date().toISOString(),
+                startDate: savedData.startDate || new Date().toISOString(),
+                nextBillingDate: savedData.nextBillingDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                status: 'active'
+            };
+
+            window.saveUserData?.(userData);
 
             // Atualizar UI com dados do usuário
-            document.getElementById('userName').textContent = name || username || 'Usuário';
-            document.getElementById('userEmail').textContent = email || 'email@example.com';
-            document.getElementById('userUsername').textContent = '@' + (username || 'usuario');
-            if (avatar) {
-                document.getElementById('userAvatar').src = avatar;
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userEmail').textContent = userData.email;
+            document.getElementById('userUsername').textContent = '@' + userData.username;
+            if (userData.avatar) {
+                document.getElementById('userAvatar').src = userData.avatar;
             }
 
             // Carregar dados de assinatura
-            if (username) {
-                await loadSubscription(username);
-            }
+            await loadSubscription(userData);
         }
 
         // Buscar informações de assinatura
-        async function loadSubscription(username) {
+        async function loadSubscription(userData) {
             try {
-                const response = await fetch(`/api/subscription/get?username=${username}`);
+                // Tentar buscar da API
+                const response = await fetch(`/api/subscription/get?username=${userData.username}`);
                 const data = await response.json();
 
                 if (data.success) {
                     const sub = data.subscription;
-                    displaySubscription(sub);
-                    displayOverview(sub);
+                    // Mesclar com dados salvos localmente
+                    const merged = { ...sub, ...userData };
+                    displaySubscription(merged);
+                    displayOverview(merged);
+                } else {
+                    // Se falhar, usar dados locais
+                    displaySubscription(userData);
+                    displayOverview(userData);
                 }
             } catch (error) {
                 console.error('Erro ao carregar assinatura:', error);
+                // Usar dados locais em caso de erro
+                displaySubscription(userData);
+                displayOverview(userData);
             }
         }
 
@@ -416,7 +457,27 @@
             };
 
             const current = planInfo[subscription.plan] || planInfo.pro;
-            const features = subscription.features[subscription.plan] || [];
+            const features = subscription.features?.[subscription.plan] || {
+                starter: [
+                    'Até 5 servidores',
+                    'Suporte por email',
+                    '10GB de armazenamento'
+                ],
+                pro: [
+                    'Até 20 servidores',
+                    'Suporte prioritário',
+                    '100GB de armazenamento',
+                    'Backup automático'
+                ],
+                ultimate: [
+                    'Servidores ilimitados',
+                    'Suporte 24/7',
+                    'Armazenamento ilimitado',
+                    'Backup automático',
+                    'Gerenciador dedicado',
+                    'API customizada'
+                ]
+            }[subscription.plan] || [];
 
             const html = `
                 <div class="plan-card" style="background: linear-gradient(135deg, ${current.color} 0%, ${current.color}dd 100%);">
@@ -430,8 +491,8 @@
                     </ul>
                     <div class="billing-info">
                         <p><strong>Status:</strong> <span class="status-badge">Ativo</span></p>
-                        <p><strong>Data de Início:</strong> ${new Date(subscription.startDate).toLocaleDateString('pt-BR')}</p>
-                        <p><strong>Próxima Cobrança:</strong> ${new Date(subscription.nextBillingDate).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Data de Início:</strong> ${new Date(subscription.startDate || new Date()).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Próxima Cobrança:</strong> ${new Date(subscription.nextBillingDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)).toLocaleDateString('pt-BR')}</p>
                     </div>
                     <button class="change-plan-btn" onclick="changePlan()">Mudar Plano</button>
                 </div>
@@ -454,7 +515,7 @@
                 <div>
                     <h4>Plano Atual: ${current.name}</h4>
                     <p>Você está utilizando o plano <strong>${current.name}</strong> a <strong>${current.price}</strong> por mês.</p>
-                    <p style="color: #999; margin-top: 10px;">Sua assinatura está ativa e será renovada em ${new Date(subscription.nextBillingDate).toLocaleDateString('pt-BR')}.</p>
+                    <p style="color: #999; margin-top: 10px;">Sua assinatura está ativa e será renovada em ${new Date(subscription.nextBillingDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)).toLocaleDateString('pt-BR')}.</p>
                     <button class="change-plan-btn" onclick="changePlan()">Atualizar Plano</button>
                 </div>
             `;
@@ -477,7 +538,12 @@
 
         // Mudar plano
         function changePlan() {
-            window.location.href = '/pagamento.html';
+            const userData = window.getUserData?.();
+            if (userData?.username) {
+                window.location.href = `/pagamento.html?username=${userData.username}&name=${encodeURIComponent(userData.name)}&email=${encodeURIComponent(userData.email)}&avatar=${encodeURIComponent(userData.avatar)}`;
+            } else {
+                window.location.href = '/pagamento.html';
+            }
         }
 
         // Criar novo servidor
@@ -490,7 +556,7 @@
         function logout() {
             if (confirm('Tem certeza que deseja sair?')) {
                 // Limpar dados da sessão
-                localStorage.clear();
+                localStorage.removeItem('userAccount');
                 window.location.href = '/login.html';
             }
         }

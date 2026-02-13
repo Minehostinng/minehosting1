@@ -1,4 +1,4 @@
-// js/subscription.js - Gerenciar seleção e salvamento de plano
+// js/subscription.js - Gerenciar seleção e salvamento de plano com persistência
 class SubscriptionManager {
     constructor() {
         this.selectedPlan = 'pro'; // Padrão
@@ -60,7 +60,9 @@ class SubscriptionManager {
             // Obter dados do usuário da URL
             const params = new URLSearchParams(window.location.search);
             const username = params.get('username') || this.getUserFromSession();
-            const email = params.get('email');
+            const name = params.get('name') || this.getUserData('name');
+            const email = params.get('email') || this.getUserData('email');
+            const avatar = params.get('avatar') || this.getUserData('avatar');
 
             if (!username) {
                 alert('❌ Você precisa fazer login primeiro!');
@@ -79,7 +81,24 @@ class SubscriptionManager {
 
             console.log(`🔄 Salvando plano ${plan} para ${username}...`);
 
-            // Fazer requisição para API
+            // Salvar dados do usuário no localStorage
+            const userData = {
+                username,
+                name,
+                email,
+                avatar,
+                plan,
+                price,
+                selectedDate: new Date().toISOString(),
+                startDate: new Date().toISOString(),
+                nextBillingDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                status: 'active'
+            };
+
+            localStorage.setItem('userAccount', JSON.stringify(userData));
+            console.log('💾 Dados salvos no localStorage:', userData);
+
+            // Fazer requisição para API também
             const response = await fetch('/api/subscription/save', {
                 method: 'POST',
                 headers: {
@@ -103,7 +122,7 @@ class SubscriptionManager {
 
                 // Redirecionar para área do cliente após 2 segundos
                 setTimeout(() => {
-                    window.location.href = `/cliente.html?username=${username}&name=${params.get('name')}&email=${email}&avatar=${params.get('avatar')}&plan=${plan}`;
+                    window.location.href = `/cliente.html?username=${username}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&avatar=${encodeURIComponent(avatar)}&plan=${plan}`;
                 }, 2000);
             } else {
                 throw new Error(data.error || 'Erro ao salvar');
@@ -140,10 +159,48 @@ class SubscriptionManager {
     }
 
     getUserFromSession() {
-        // Tentar obter do localStorage ou sessionStorage
-        return localStorage.getItem('username') || sessionStorage.getItem('username');
+        // Tentar obter do localStorage
+        const userData = this.getUserData();
+        return userData?.username;
+    }
+
+    getUserData(field = null) {
+        try {
+            const stored = localStorage.getItem('userAccount');
+            if (!stored) return field ? null : {};
+            
+            const data = JSON.parse(stored);
+            return field ? data[field] : data;
+        } catch (e) {
+            console.error('Erro ao recuperar dados:', e);
+            return field ? null : {};
+        }
     }
 }
+
+// Função auxiliar global para salvar dados de usuário
+window.saveUserData = function(userData) {
+    try {
+        localStorage.setItem('userAccount', JSON.stringify(userData));
+        console.log('💾 Dados de usuário salvos:', userData);
+    } catch (e) {
+        console.error('Erro ao salvar dados:', e);
+    }
+};
+
+// Função auxiliar global para obter dados de usuário
+window.getUserData = function(field = null) {
+    try {
+        const stored = localStorage.getItem('userAccount');
+        if (!stored) return field ? null : {};
+        
+        const data = JSON.parse(stored);
+        return field ? data[field] : data;
+    } catch (e) {
+        console.error('Erro ao recuperar dados:', e);
+        return field ? null : {};
+    }
+};
 
 // Iniciar quando o DOM carregar
 document.addEventListener('DOMContentLoaded', () => {
