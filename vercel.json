@@ -10,28 +10,5 @@
     "CALLBACK_URL",
     "SESSION_SECRET",
     "NODE_ENV"
-  ],
-  "functions": {
-    "js/server.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
-    {
-      "src": "/auth/(.*)",
-      "dest": "js/server.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "js/server.js"
-    },
-    {
-      "src": "/health",
-      "dest": "js/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
   ]
 }
