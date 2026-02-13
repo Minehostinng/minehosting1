@@ -1,16 +1,16 @@
-// api/auth/github/callback.js - GitHub OAuth callback
+// api/auth/callback.js - GitHub OAuth callback (rota única)
 const axios = require('axios');
 
 module.exports = async (req, res) => {
   try {
     const { code } = req.query;
 
+    console.log(`[Callback] Recebido - Code: ${code ? 'sim' : 'não'}`);
+
     if (!code) {
-      console.log('[Callback] No code provided');
+      console.log('[Callback] Código não fornecido');
       return res.redirect('/login.html?error=no_code');
     }
-
-    console.log('[Callback] Processing code...');
 
     // Trocar código por access token
     const tokenResponse = await axios.post(
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
         code: code,
-        redirect_uri: process.env.CALLBACK_URL || 'https://minehosting-seven.vercel.app/api/auth/github/callback'
+        redirect_uri: process.env.CALLBACK_URL || 'https://minehosting-seven.vercel.app/api/auth/callback'
       },
       {
         headers: { Accept: 'application/json' }
@@ -30,11 +30,11 @@ module.exports = async (req, res) => {
     const error = tokenResponse.data.error;
 
     if (error || !accessToken) {
-      console.error('[Callback] Token error:', error);
+      console.error('[Callback] Erro de token:', error);
       return res.redirect('/login.html?error=token_error');
     }
 
-    console.log('[Callback] Token obtained, fetching user...');
+    console.log('[Callback] Token obtido');
 
     // Buscar dados do usuário
     const userResponse = await axios.get('https://api.github.com/user', {
@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
     });
 
     const user = userResponse.data;
-    console.log(`[Callback] User: ${user.login}`);
+    console.log(`[Callback] Usuário: ${user.login}`);
 
     // Buscar email
     let email = user.email;
@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
         });
         email = emailsResponse.data.find(e => e.primary)?.email;
       } catch (emailError) {
-        console.log('[Callback] Email fetch error');
+        console.log('[Callback] Erro ao buscar email');
       }
     }
 
@@ -80,12 +80,12 @@ module.exports = async (req, res) => {
           }
         }
       );
-      console.log(`[Callback] ✓ Repo created for ${user.login}`);
+      console.log(`[Callback] ✓ Repo criado para ${user.login}`);
     } catch (repoError) {
       if (repoError.response?.status === 422) {
-        console.log(`[Callback] Repo already exists for ${user.login}`);
+        console.log(`[Callback] Repo já existe para ${user.login}`);
       } else {
-        console.log(`[Callback] Repo error:`, repoError.message);
+        console.log(`[Callback] Erro ao criar repo`, repoError.message);
       }
     }
 
@@ -98,7 +98,7 @@ module.exports = async (req, res) => {
       success: 'true'
     }).toString();
 
-    console.log('[Callback] Redirecting to panel...');
+    console.log('[Callback] Redirecionando para painel...');
     res.redirect(`/painel.html?${queryParams}`);
   } catch (error) {
     console.error('[Callback Error]', error.message);

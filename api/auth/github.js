@@ -5,13 +5,13 @@ module.exports = (req, res) => {
   try {
     const clientId = process.env.GITHUB_CLIENT_ID;
     const redirectUri = encodeURIComponent(
-      process.env.CALLBACK_URL || 'https://minehosting-seven.vercel.app/api/auth/github/callback'
+      process.env.CALLBACK_URL || 'https://minehosting-seven.vercel.app/api/auth/callback'
     );
     const scope = encodeURIComponent('user:email repo');
     
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code`;
     
-    console.log('[GitHub] Redirecting to GitHub auth...');
+    console.log('[GitHub] Redirecionando para GitHub auth...');
     res.redirect(githubAuthUrl);
   } catch (error) {
     console.error('[GitHub Error]', error.message);
