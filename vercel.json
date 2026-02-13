@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "public": true,
+  "buildCommand": "npm install",
+  "env": [
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "GITHUB_PAT",
+    "GITHUB_OWNER",
+    "GITHUB_REPO",
+    "CALLBACK_URL",
+    "SESSION_SECRET",
+    "NODE_ENV"
+  ],
+  "functions": {
+    "js/server.js": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "js/server.js"
+    },
+    {
+      "source": "/auth/(.*)",
+      "destination": "js/server.js"
+    }
+  ]
+}
