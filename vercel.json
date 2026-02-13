@@ -1,14 +1,4 @@
 {
   "version": 2,
-  "outputDirectory": ".",
-  "rewrites": [
-    {
-      "source": "/auth/:path*",
-      "destination": "/api/auth/:path*"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
-    }
-  ]
+  "outputDirectory": "."
 }
