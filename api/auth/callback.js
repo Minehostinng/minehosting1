@@ -98,8 +98,8 @@ module.exports = async (req, res) => {
       success: 'true'
     }).toString();
 
-    console.log('[Callback] Redirecionando para painel...');
-    res.redirect(`/painel.html?${queryParams}`);
+    console.log('[Callback] Redirecionando para seleção de plano...');
+    res.redirect(`/pagamento.html?${queryParams}`);
   } catch (error) {
     console.error('[Callback Error]', error.message);
     res.redirect('/login.html?error=callback_failed');

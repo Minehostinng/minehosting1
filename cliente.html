@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente - MineHosting</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            color: white;
+        }
+
+        .sidebar-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-menu a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #ddd;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info h2 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+
+        .user-info p {
+            margin: 2px 0;
+            color: #666;
+        }
+
+        .logout-btn {
+            margin-left: auto;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .plan-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .plan-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .plan-card h4 {
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            font-size: 18px;
+        }
+
+        .plan-price {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .plan-price small {
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features li:before {
+            content: "✓ ";
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .billing-info {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .billing-info p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .change-plan-btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .change-plan-btn:hover {
+            background: #764ba2;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .servers-section {
+            margin-top: 20px;
+        }
+
+        .server-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .server-item strong {
+            color: #333;
+        }
+
+        .server-item p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .sidebar-menu {
+                display: flex;
+                gap: 10px;
+            }
+
+            .sidebar-menu li {
+                margin-bottom: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .user-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logout-btn {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                🎮 MineHosting
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" onclick="showSection('overview')">📊 Visão Geral</a></li>
+                <li><a href="#" onclick="showSection('subscription')">📋 Meu Plano</a></li>
+                <li><a href="#" onclick="showSection('servers')">🖥️ Meus Servidores</a></li>
+                <li><a href="#" onclick="showSection('billing')">💳 Faturamento</a></li>
+                <li><a href="#" onclick="showSection('support')">🆘 Suporte</a></li>
+                <li><a href="/" onclick="logout()">🚪 Sair</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- User Header -->
+            <div class="user-header">
+                <div class="user-avatar">
+                    <img id="userAvatar" src="" alt="Avatar">
+                </div>
+                <div class="user-info">
+                    <h2 id="userName">Loading...</h2>
+                    <p id="userEmail">Carregando...</p>
+                    <p id="userUsername" style="color: #999;">@usuario</p>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+
+            <!-- Overview Section -->
+            <div id="overview" class="section" style="display: block;">
+                <h3>📊 Visão Geral da Conta</h3>
+                <div id="overviewContent">
+                    <div class="loading">Carregando informações...</div>
+                </div>
+            </div>
+
+            <!-- Subscription Section -->
+            <div id="subscription" class="section" style="display: none;">
+                <h3>📋 Meu Plano de Assinatura</h3>
+                <div id="subscriptionContent">
+                    <div class="loading">Carregando plano...</div>
+                </div>
+            </div>
+
+            <!-- Servers Section -->
+            <div id="servers" class="section" style="display: none;">
+                <h3>🖥️ Meus Servidores</h3>
+                <div id="serversContent">
+                    <div class="servers-section">
+                        <p style="color: #666;">Você não tem nenhum servidor criado ainda.</p>
+                        <button class="change-plan-btn" onclick="createServer()">Criar Novo Servidor</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Section -->
+            <div id="billing" class="section" style="display: none;">
+                <h3>💳 Histórico de Faturamento</h3>
+                <div id="billingContent">
+                    <p style="color: #666;">Nenhuma transação registrada ainda.</p>
+                </div>
+            </div>
+
+            <!-- Support Section -->
+            <div id="support" class="section" style="display: none;">
+                <h3>🆘 Suporte ao Cliente</h3>
+                <div id="supportContent">
+                    <p style="color: #666; margin-bottom: 20px;">Entre em contato conosco para qualquer dúvida ou problema:</p>
+                    <p><strong>Email:</strong> <a href="mailto:support@minehosting.com">support@minehosting.com</a></p>
+                    <p><strong>Discord:</strong> <a href="#" target="_blank">MineHosting#0001</a></p>
+                    <p><strong>Status:</strong> <a href="https://status.minehosting.com" target="_blank">Acessar Status</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carregar dados do usuário dos parâmetros da URL
+        async function loadUserData() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('username');
+            const name = params.get('name');
+            const email = params.get('email');
+            const avatar = params.get('avatar');
+
+            // Atualizar UI com dados do usuário
+            document.getElementById('userName').textContent = name || username || 'Usuário';
+            document.getElementById('userEmail').textContent = email || 'email@example.com';
+            document.getElementById('userUsername').textContent = '@' + (username || 'usuario');
+            if (avatar) {
+                document.getElementById('userAvatar').src = avatar;
+            }
+
+            // Carregar dados de assinatura
+            if (username) {
+                await loadSubscription(username);
+            }
+        }
+
+        // Buscar informações de assinatura
+        async function loadSubscription(username) {
+            try {
+                const response = await fetch(`/api/subscription/get?username=${username}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const sub = data.subscription;
+                    displaySubscription(sub);
+                    displayOverview(sub);
+                }
+            } catch (error) {
+                console.error('Erro ao carregar assinatura:', error);
+            }
+        }
+
+        // Exibir informações de assinatura
+        function displaySubscription(subscription) {
+            const planInfo = {
+                starter: { name: 'Starter', price: 'R$ 15', color: '#3498db' },
+                pro: { name: 'Pro', price: 'R$ 25', color: '#667eea' },
+                ultimate: { name: 'Ultimate', price: 'R$ 35', color: '#764ba2' }
+            };
+
+            const current = planInfo[subscription.plan] || planInfo.pro;
+            const features = subscription.features[subscription.plan] || [];
+
+            const html = `
+                <div class="plan-card" style="background: linear-gradient(135deg, ${current.color} 0%, ${current.color}dd 100%);">
+                    <h4>${current.name}</h4>
+                    <div class="plan-price">
+                        ${current.price}
+                        <small>/mês</small>
+                    </div>
+                    <ul class="plan-features">
+                        ${features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                    <div class="billing-info">
+                        <p><strong>Status:</strong> <span class="status-badge">Ativo</span></p>
+                        <p><strong>Data de Início:</strong> ${new Date(subscription.startDate).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Próxima Cobrança:</strong> ${new Date(subscription.nextBillingDate).toLocaleDateString('pt-BR')}</p>
+                    </div>
+                    <button class="change-plan-btn" onclick="changePlan()">Mudar Plano</button>
+                </div>
+            `;
+
+            document.getElementById('subscriptionContent').innerHTML = html;
+        }
+
+        // Exibir visão geral
+        function displayOverview(subscription) {
+            const planInfo = {
+                starter: { name: 'Starter', price: 'R$ 15' },
+                pro: { name: 'Pro', price: 'R$ 25' },
+                ultimate: { name: 'Ultimate', price: 'R$ 35' }
+            };
+
+            const current = planInfo[subscription.plan] || planInfo.pro;
+
+            const html = `
+                <div>
+                    <h4>Plano Atual: ${current.name}</h4>
+                    <p>Você está utilizando o plano <strong>${current.name}</strong> a <strong>${current.price}</strong> por mês.</p>
+                    <p style="color: #999; margin-top: 10px;">Sua assinatura está ativa e será renovada em ${new Date(subscription.nextBillingDate).toLocaleDateString('pt-BR')}.</p>
+                    <button class="change-plan-btn" onclick="changePlan()">Atualizar Plano</button>
+                </div>
+            `;
+
+            document.getElementById('overviewContent').innerHTML = html;
+        }
+
+        // Mudar de seção
+        function showSection(section) {
+            // Esconder todas as seções
+            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+
+            // Mostrar seção ativa
+            document.getElementById(section).style.display = 'block';
+
+            // Atualizar menu
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Mudar plano
+        function changePlan() {
+            window.location.href = '/pagamento.html';
+        }
+
+        // Criar novo servidor
+        function createServer() {
+            alert('Redirecionando para criar novo servidor...');
+            // Aqui você poderia redirecionar para uma página de criação de servidor
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                // Limpar dados da sessão
+                localStorage.clear();
+                window.location.href = '/login.html';
+            }
+        }
+
+        // Carregar dados quando a página carrega
+        document.addEventListener('DOMContentLoaded', loadUserData);
+    </script>
+</body>
+</html>

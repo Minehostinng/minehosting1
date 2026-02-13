@@ -907,7 +907,7 @@
                 <i class="fas fa-cube"></i>
                 <span>Mine<span class="highlight">Hosting</span></span>
             </a>
-            <div class="nav-buttons">
+            <div class="nav-buttons" id="navButtons">
                 <a href="login.html" class="btn btn-outline">Login</a>
                 <a href="registro.html" class="btn btn-primary">Começar Agora</a>
             </div>
@@ -1190,7 +1190,34 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/subscription.js"></script>
     <script>
+        // Atualizar navbar e dados do usuário
+        function loadUserContext() {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get('username');
+            const name = params.get('name');
+            const avatar = params.get('avatar');
+
+            // Se usuário logado, atualizar navbar
+            if (username) {
+                const navButtons = document.getElementById('navButtons');
+                navButtons.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${avatar || 'https://via.placeholder.com/40'}" alt="Avatar" 
+                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <span style="color: var(--text-primary); font-weight: 500;">${name || username}</span>
+                        <a href="cliente.html?username=${username}&name=${name}&email=${params.get('email')}&avatar=${avatar}" 
+                           class="btn btn-outline" style="font-size: 0.9rem;">Área do Cliente</a>
+                    </div>
+                `;
+                
+                // Atualizar título
+                document.title = `Selecionar Plano - ${name} - MineHosting`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadUserContext);
         // Plan Selection
         const planOptions = document.querySelectorAll('.plan-option');
         const billingOptions = document.querySelectorAll('.billing-option');
@@ -1399,22 +1426,12 @@
 
         // Submit Payment
         document.getElementById('submitPayment')?.addEventListener('click', () => {
-            const btn = document.getElementById('submitPayment');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
-            btn.disabled = true;
-
-            setTimeout(() => {
-                // Simulate success
-                document.querySelectorAll('.step').forEach(s => s.classList.add('completed'));
-                document.querySelectorAll('.step-divider').forEach(d => d.classList.add('active'));
-
-                btn.innerHTML = '<i class="fas fa-check"></i> Pagamento Aprovado!';
-                btn.style.background = 'linear-gradient(135deg, #00b894 0%, #00d4aa 100%)';
-
-                setTimeout(() => {
-                    window.location.href = 'painel.html';
-                }, 2000);
-            }, 3000);
+            // Usar o gerenciador de subscrição para salvar e redirecionar
+            if (window.subscriptionManager) {
+                window.subscriptionManager.savePlan();
+            } else {
+                alert('Erro ao carregar gerenciador de assinatura. Tente novamente.');
+            }
         });
 
         // Check URL params for pre-selected plan
