@@ -3,12 +3,35 @@
   "buildCommand": "npm install",
   "env": [
     "GITHUB_CLIENT_ID",
-    "GITHUB_CLIENT_SECRET",
+    "GITHUB_CLIENT_SECRET", 
     "GITHUB_PAT",
     "GITHUB_OWNER",
     "GITHUB_REPO",
     "CALLBACK_URL",
     "SESSION_SECRET",
     "NODE_ENV"
+  ],
+  "functions": {
+    "js/server.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/auth/(.*)",
+      "dest": "js/server.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "js/server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "js/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }
